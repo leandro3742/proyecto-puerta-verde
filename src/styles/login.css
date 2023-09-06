@@ -1,0 +1,16 @@
+.login-box {
+  padding: 25px;
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media screen and (max-width: 768px) {
+  .login-box {
+    width: 350px;
+    height: 300px;
+  }
+}

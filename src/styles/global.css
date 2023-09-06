@@ -1,0 +1,22 @@
+:root {
+  --color-background: #3F3C3C;
+  --color-darkBlue: #222430;  
+  --color-logo: #01933A;
+  --color-input: #ABEDB6;
+  --color-smoke: #BBBBBB;
+}
+body {
+  background-color: var(--color-background);
+  color: white;
+  margin: 0;
+}
+
+#logo {
+  height: 100px;
+}
+
+@media screen and (max-width: 768px) {
+  #logo {
+    height: 75px;
+  }
+}
