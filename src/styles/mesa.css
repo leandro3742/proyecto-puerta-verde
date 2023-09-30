@@ -8,6 +8,41 @@
   margin-top: 30px;
   transition: background-color 0.3s ease;
 }
+.carta-background:hover {
+  cursor: pointer;
+  background: var(--color-logo);
+}
+
+.dialog-obs {
+  border: none;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  position: absolute;
+  top: calc(50% - 150px);
+  height: 300px;
+  width: 400px;
+  background-color: var(--color-darkBlue);
+  color: white;
+  outline: none;
+}
+.dialog-obs > textarea {
+  border: none;
+  height: 200px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: var(--color-input);
+  outline: none;
+  padding: 10px;
+  resize: none;
+}
+
+.dialog-obs > h6 {
+  font-size: 24px;
+}
+
+.dialog-article:nth-child(even) {
+  background-color: var(--color-input);
+}
 
 @media screen and (max-width: 768px) {
   .carta-background {
@@ -18,5 +53,18 @@
   .mesas-total {
     width: 100px;
     height: 29px;
+  }
+
+  .dialog-obs {
+    top: calc(50% - 100px);
+    width: 300px;
+    height: 250px;
+  }
+
+  .dialog-obs > textarea {
+    height: 150px;
+  }
+  .dialog-obs > h6 {
+    font-size: 18px;
   }
 }

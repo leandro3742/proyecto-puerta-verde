@@ -12,17 +12,23 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@microsoft/signalr": "^7.0.11",
+    "@mui/icons-material": "^5.14.9",
     "@mui/material": "^5.14.8",
     "bootstrap": "^5.3.1",
     "notistack": "^3.0.1",
     "react": "^18.2.0",
+    "react-cssfx-loading": "^2.1.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
+    "react-signalr": "^0.2.18",
+    "websocket": "^1.0.34",
     "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/websocket": "^1.0.7",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react-swc": "^3.3.2",

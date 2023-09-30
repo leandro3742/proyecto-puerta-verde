@@ -5,8 +5,26 @@ import { ThemeConfig } from './theme.config'
 import { SnackbarProvider } from 'notistack'
 import Mesero from './views/Mesero'
 import Mesa from './views/Mesa'
+import { useEffect } from 'react'
+import * as signalR from '@microsoft/signalr'
 
 function App() {
+
+  useEffect(() => {
+    const hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl("https://localhost:32768/chatHub", { withCredentials: true })
+      .configureLogging(signalR.LogLevel.Information)
+      .build();
+
+    hubConnection.start()
+      .then(() => {
+        console.log("Conexión SignalR establecida");
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+  }, []);
 
   return (
     <BrowserRouter>

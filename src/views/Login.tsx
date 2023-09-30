@@ -4,18 +4,30 @@ import { useSnackbar } from "notistack"
 import '../styles/login.css'
 // Material UI
 import { Button, Paper, TextField } from "@mui/material"
+import { login } from "../api/login"
+import spinnerStore from "../state/spinner"
 
 const Login = () => {
+  const { changeState } = spinnerStore()
   const { enqueueSnackbar } = useSnackbar()
   const navigate = useNavigate();
 
-  const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    changeState()
     const data = new FormData(e.currentTarget);
-    console.log(data.get('usuario'))
-    console.log(data.get('password'))
-    enqueueSnackbar('Hola', { variant: 'success' })
-    navigate('/mesero')
+    login({ username: data.get('usuario') as string, password: data.get('password') as string })
+      .then(response => {
+        enqueueSnackbar('Bienvenido, ' + response.nombre, { variant: 'success' })
+        localStorage.setItem('token', response.token)
+        navigate('/mesero')
+      })
+      .catch(() => {
+        enqueueSnackbar('Usuario y/o contraseña incorrectos', { variant: 'error' })
+      })
+      .finally(() => {
+        changeState()
+      })
   }
 
   return (

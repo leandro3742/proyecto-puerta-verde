@@ -1,115 +1,96 @@
 import { Button } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import '../styles/mesa.css'
-const menu = [
-  {
-    id: 1,
-    name: 'Hamburguesa',
-    price: 100,
-    description: 'Hamburguesa con queso',
-  },
-  {
-    id: 2,
-    name: 'Pizza',
-    price: 120,
-    description: 'Pizza de pepperoni',
-  },
-  {
-    id: 3,
-    name: 'Sushi',
-    price: 150,
-    description: 'Sushi de salmón',
-  },
-  {
-    id: 4,
-    name: 'Ensalada',
-    price: 70,
-    description: 'Ensalada de pollo',
-  },
-  {
-    id: 5,
-    name: 'Tacos',
-    price: 90,
-    description: 'Tacos de carne asada',
-  },
-  {
-    id: 6,
-    name: 'Pasta',
-    price: 80,
-    description: 'Pasta al pesto',
-  },
-  {
-    id: 7,
-    name: 'Pollo a la parrilla',
-    price: 110,
-    description: 'Pollo a la parrilla con verduras',
-  },
-  {
-    id: 8,
-    name: 'Sándwich',
-    price: 60,
-    description: 'Sándwich de jamón y queso',
-  },
-  {
-    id: 9,
-    name: 'Tarta',
-    price: 85,
-    description: 'Tarta de manzana',
-  },
-  {
-    id: 10,
-    name: 'Burrito',
-    price: 95,
-    description: 'Burrito de cerdo',
-  },
-  {
-    id: 11,
-    name: 'Hot Dog',
-    price: 75,
-    description: 'Hot Dog con mostaza y ketchup',
-  },
-  {
-    id: 12,
-    name: 'Sopa',
-    price: 55,
-    description: 'Sopa de tomate',
-  },
-  {
-    id: 13,
-    name: 'Salmón',
-    price: 130,
-    description: 'Salmón a la parrilla',
-  },
-  {
-    id: 14,
-    name: 'Tarta de chocolate',
-    price: 90,
-    description: 'Tarta de chocolate con crema',
-  },
-  {
-    id: 15,
-    name: 'Filete de res',
-    price: 140,
-    description: 'Filete de res a la parrilla',
-  },
-];
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { DtProduct } from "../dataTypes/DtProduct";
+import { getListProductos } from "../api/productos";
+import { DtProducto } from "../dataTypes/DtProducto";
+import spinnerStore from "../state/spinner";
 
 const Mesa = () => {
   const { mesa } = useParams()
-  console.log(mesa);
+  const { changeState } = spinnerStore()
+  const [menu, setMenu] = useState<DtProducto[]>([])
+  const [showModal, setShowModal] = useState(false)
+  const [pedido, setPedido] = useState<Array<DtProduct>>([])
+  const [productSelected, setProductSelected] = useState<null | string | number>(null);
+  const [obs, setObs] = useState('')
+  const [openPedido, setOpenPedido] = useState(false)
+
+  const addProduct = (productId: string) => {
+    setShowModal(true)
+    setProductSelected(productId)
+  }
+
+  const confirmProduct = () => {
+    const aux: DtProduct = {
+      id: productSelected as string,
+      product: menu.find(elem => elem.id_Producto === productSelected),
+      obs
+    }
+    if (productSelected)
+      setPedido([...pedido, aux])
+    setShowModal(false)
+  }
+
+  useEffect(() => {
+    changeState()
+    getListProductos()
+      .then(res => setMenu(res))
+      .catch(err => console.log(err))
+      .finally(() => changeState())
+  }, [])
+
   return (
     <div>
-      <Link to='/mesero'><Button>Volver</Button></Link>
-      <section className="d-flex flex-wrap justify-content-around">
-        {menu.map(elem => {
-          return (
-            <article key={elem.id} className="carta-background">
-              <h5 className="text-center">{elem.name}</h5>
-              <p className="text-center">${elem.price}</p>
-            </article>
-          )
-        })}
-      </section>
+      <div style={{ opacity: showModal ? 0.1 : 1, pointerEvents: showModal ? 'none' : 'auto' }}>
+        <div className="d-flex  justify-content-between p-2">
+          <Link to='/mesero'><Button>Volver</Button></Link>
+          <Button startIcon={<AddShoppingCartIcon />} onClick={() => setOpenPedido(true)}>Ver pedido</Button>
+        </div>
+
+        <section className="d-flex flex-wrap justify-content-around">
+          {menu.map(elem => {
+            return (
+              <article key={elem.id_Producto} className="carta-background" onClick={() => addProduct(elem.id_Producto)}>
+                <h5 className="text-center">{elem.nombre}</h5>
+                <p className="text-center">${elem.precio}</p>
+              </article>
+            )
+          })}
+        </section>
+      </div>
+      <dialog open={showModal} className="dialog-obs py-2">
+        <h6>Observaciones</h6>
+        <textarea onChange={(e) => setObs(e.target.value)} value={obs} />
+        <section className="d-flex justify-content-between mt-1">
+          <Button color="error" size="small" onClick={() => setShowModal(false)}>Cancelar</Button>
+          <Button startIcon={<AddShoppingCartIcon />} size="medium" onClick={confirmProduct}>Agregar</Button>
+        </section>
+      </dialog>
+      <dialog open={openPedido} className="dialog-obs">
+        <h6>Pedido</h6>
+        <section className="d-flex flex-column">
+          {pedido.map(elem => {
+            return (
+              <article key={elem.id} className="dialog-article">
+                <section className="d-flex justify-content-between">
+                  <div className="d-flex flex-column">
+                    <span>{elem.product?.name}</span>
+                    <span className="ms-4 text-secondary">{elem.obs}</span>
+                  </div>
+                  <p>${elem.product?.price}</p>
+                </section>
+                <div className="d-flex justify-content-end mt-2">
+                  <Button size="small" color="error">Eliminar</Button>
+                  <Button size="small" className="ms-5">Editar</Button>
+                </div>
+              </article>
+            )
+          })}
+        </section>
+      </dialog>
     </div>
   )
 }
