@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import '../styles/mesa.css'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -9,7 +9,7 @@ import { DtProducto } from "../dataTypes/DtProducto";
 import spinnerStore from "../state/spinner";
 
 const Mesa = () => {
-  const { mesa } = useParams()
+  // const { mesa } = useParams()
   const { changeState } = spinnerStore()
   const [menu, setMenu] = useState<DtProducto[]>([])
   const [showModal, setShowModal] = useState(false)
