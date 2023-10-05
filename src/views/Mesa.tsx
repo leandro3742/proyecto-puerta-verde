@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import '../styles/mesa.css'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -9,7 +9,7 @@ import { DtProducto } from "../dataTypes/DtProducto";
 import spinnerStore from "../state/spinner";
 
 const Mesa = () => {
-  const { mesa } = useParams()
+  // const { mesa } = useParams()
   const { changeState } = spinnerStore()
   const [menu, setMenu] = useState<DtProducto[]>([])
   const [showModal, setShowModal] = useState(false)
@@ -24,13 +24,28 @@ const Mesa = () => {
   }
 
   const confirmProduct = () => {
-    const aux: DtProduct = {
-      id: productSelected as string,
-      product: menu.find(elem => elem.id_Producto === productSelected),
-      obs
+    const existPedido = pedido.find(elem => elem.id == productSelected)
+    if (existPedido && existPedido.obs === obs) {
+      // Agrega dos veces el mismo elemento
+      setPedido(pedido.map(elem => {
+        return elem.id == productSelected && elem.obs === obs
+          ?
+          { ...elem, qty: elem.qty + 1 }
+          :
+          elem
+      }))
+    } else {
+      const aux: DtProduct = {
+        id: productSelected as string,
+        product: menu.find(elem => elem.id_Producto == productSelected),
+        obs,
+        qty: 1
+      }
+
+      if (productSelected)
+        setPedido([...pedido, aux])
     }
-    if (productSelected)
-      setPedido([...pedido, aux])
+    setObs('')
     setShowModal(false)
   }
 
@@ -42,6 +57,10 @@ const Mesa = () => {
       .finally(() => changeState())
   }, [])
 
+  const deleteProduct = (elem: DtProduct) => {
+    const aux = pedido.filter(e => JSON.stringify(e) != JSON.stringify(elem))
+    setPedido(aux)
+  }
   return (
     <div>
       <div style={{ opacity: showModal ? 0.1 : 1, pointerEvents: showModal ? 'none' : 'auto' }}>
@@ -69,27 +88,35 @@ const Mesa = () => {
           <Button startIcon={<AddShoppingCartIcon />} size="medium" onClick={confirmProduct}>Agregar</Button>
         </section>
       </dialog>
-      <dialog open={openPedido} className="dialog-obs">
-        <h6>Pedido</h6>
-        <section className="d-flex flex-column">
+      <dialog open={openPedido} className="dialog-cart">
+        <header style={{ height: '10%' }}>
+          <h6>Pedido</h6>
+        </header>
+        <section style={{ height: '80%', overflowY: 'auto' }} className="d-flex flex-column">
           {pedido.map(elem => {
             return (
-              <article key={elem.id} className="dialog-article">
+              <article key={elem.id} className="p-2 rounded dialog-article">
                 <section className="d-flex justify-content-between">
                   <div className="d-flex flex-column">
-                    <span>{elem.product?.name}</span>
+                    <span>{elem.product?.nombre}</span>
                     <span className="ms-4 text-secondary">{elem.obs}</span>
+                    <span className="ms-4 text-secondary">Cant: {elem.qty}</span>
                   </div>
-                  <p>${elem.product?.price}</p>
+                  <p>${elem.product?.precio}</p>
                 </section>
                 <div className="d-flex justify-content-end mt-2">
-                  <Button size="small" color="error">Eliminar</Button>
+                  <Button size="small" color="error" onClick={() => deleteProduct(elem)}>Eliminar</Button>
                   <Button size="small" className="ms-5">Editar</Button>
                 </div>
               </article>
             )
           })}
         </section>
+        <hr />
+        <footer style={{ height: '10%' }} className="d-flex justify-content-between mt-3 jus">
+          <Button size="small" color="error" onClick={() => setOpenPedido(false)}>Cancelar</Button>
+          <Button size="small" >Enviar</Button>
+        </footer>
       </dialog>
     </div>
   )

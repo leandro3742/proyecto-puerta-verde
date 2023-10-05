@@ -7,6 +7,8 @@ import Mesero from './views/Mesero'
 import Mesa from './views/Mesa'
 import { useEffect } from 'react'
 import * as signalR from '@microsoft/signalr'
+import AdminHome from './views/admin/AdminHome'
+import ProtectedRoutes from './componetns/ProtectedRoutes'
 
 function App() {
 
@@ -37,10 +39,20 @@ function App() {
         <ThemeConfig>
           <Layout>
             <Routes>
-              <Route path="/" element={<div>Home</div>} />
               <Route path="/login" element={<Login />} />
-              <Route path='/mesero' element={<Mesero />} />
-              <Route path='mesero/:mesa' element={<Mesa />} />
+
+              <Route path='/' element={<ProtectedRoutes />}>
+                <Route index element={<div>Home</div>} />
+                <Route path='mesero' element={<Mesero />} />
+                <Route path='mesero/:mesa' element={<Mesa />} />
+              </Route>
+
+              <Route path='/admin' element={<ProtectedRoutes />} >
+                <Route index element={<AdminHome />} />
+                <Route path='productos' element={<div>Productos</div>} />
+                {/* AGREGAR LAS RUTAS ACA */}
+              </Route>
+
             </Routes>
           </Layout>
         </ThemeConfig>
