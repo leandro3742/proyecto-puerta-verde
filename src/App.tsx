@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Layout from './componetns/Layout'
+import Layout from './components/Layout'
 import Login from './views/Login'
 import { ThemeConfig } from './theme.config'
 import { SnackbarProvider } from 'notistack'
@@ -8,7 +8,7 @@ import Mesa from './views/Mesa'
 import { useEffect } from 'react'
 import * as signalR from '@microsoft/signalr'
 import AdminHome from './views/admin/AdminHome'
-import ProtectedRoutes from './componetns/ProtectedRoutes'
+import ProtectedRoutes from './components/ProtectedRoutes'
 
 function App() {
 

@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import '../styles/mesa.css'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -7,9 +7,13 @@ import { DtProduct } from "../dataTypes/DtProduct";
 import { getListProductos } from "../api/productos";
 import { DtProducto } from "../dataTypes/DtProducto";
 import spinnerStore from "../state/spinner";
+import { DtPedido } from "../dataTypes/DtPedido";
+import { getFecha, getHora } from "../assets/utils";
+import { crearPedido } from "../api/pedido";
+import { enqueueSnackbar } from "notistack";
 
 const Mesa = () => {
-  // const { mesa } = useParams()
+  const { mesa } = useParams()
   const { changeState } = spinnerStore()
   const [menu, setMenu] = useState<DtProducto[]>([])
   const [showModal, setShowModal] = useState(false)
@@ -61,6 +65,49 @@ const Mesa = () => {
     const aux = pedido.filter(e => JSON.stringify(e) != JSON.stringify(elem))
     setPedido(aux)
   }
+  const postPedido = async () => {
+    console.log(pedido)
+    const lista_IdProductos: Array<{
+      id_Producto: number,
+      observacion: string
+    }> = [];
+
+    pedido.forEach(elem => {
+      for (let i = 0; i < elem.qty; i++) {
+        lista_IdProductos.push({
+          id_Producto: parseInt(elem.id),
+          observacion: elem.obs
+        })
+      }
+    })
+    const totalPedido = pedido.reduce((acc, elem) => acc + (elem.product?.precio || 0) * elem.qty, 0)
+    const newPedido: DtPedido = {
+      id_Pedido: 0,
+      valorPedido: totalPedido,
+      id_Cli_preferencial: 0,
+      pago: false,
+      username: 'fbauza2014@gmail.com',
+      id_Mesa: mesa ? parseInt(mesa) : 0,
+      estadoProceso: false,
+      hora_ingreso: getHora(),
+      fecha_ingreso: getFecha(),
+      numero_movil: '',
+      lista_IdProductos
+    }
+    console.log(newPedido)
+    try {
+      changeState()
+      const create = await crearPedido(newPedido)
+      console.log(create)
+      enqueueSnackbar('Pedido creado', { variant: 'success' })
+      changeState()
+    }
+    catch (err) {
+      enqueueSnackbar('Error al crear el pedido', { variant: 'error' })
+      changeState()
+    }
+  }
+
   return (
     <div>
       <div style={{ opacity: showModal ? 0.1 : 1, pointerEvents: showModal ? 'none' : 'auto' }}>
@@ -89,13 +136,14 @@ const Mesa = () => {
         </section>
       </dialog>
       <dialog open={openPedido} className="dialog-cart">
-        <header style={{ height: '10%' }}>
-          <h6>Pedido</h6>
+        <header>
+          <h5>Pedido</h5>
+          <hr />
         </header>
-        <section style={{ height: '80%', overflowY: 'auto' }} className="d-flex flex-column">
+        <section className="d-flex flex-column">
           {pedido.map(elem => {
             return (
-              <article key={elem.id} className="p-2 rounded dialog-article">
+              <article key={elem.id + elem.obs} className="p-2 rounded dialog-article">
                 <section className="d-flex justify-content-between">
                   <div className="d-flex flex-column">
                     <span>{elem.product?.nombre}</span>
@@ -106,16 +154,16 @@ const Mesa = () => {
                 </section>
                 <div className="d-flex justify-content-end mt-2">
                   <Button size="small" color="error" onClick={() => deleteProduct(elem)}>Eliminar</Button>
-                  <Button size="small" className="ms-5">Editar</Button>
+                  {/* <Button size="small" sx={{ backgroundColor: '#f1f1f1', color: 'black' }} className="ms-5" onClick={() => editProduct()}>Editar</Button> */}
                 </div>
               </article>
             )
           })}
         </section>
         <hr />
-        <footer style={{ height: '10%' }} className="d-flex justify-content-between mt-3 jus">
+        <footer className="d-flex justify-content-between mt-3 jus">
           <Button size="small" color="error" onClick={() => setOpenPedido(false)}>Cancelar</Button>
-          <Button size="small" >Enviar</Button>
+          <Button size="small" onClick={postPedido} >Enviar</Button>
         </footer>
       </dialog>
     </div>
