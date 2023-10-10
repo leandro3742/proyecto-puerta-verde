@@ -7,7 +7,7 @@ interface ILogin {
 
 export const login = async (data: ILogin) => {
   try {
-    const response = await fetch(`${BACKEND_URL}login`, {
+    const response = await fetch(`${BACKEND_URL}Login`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
