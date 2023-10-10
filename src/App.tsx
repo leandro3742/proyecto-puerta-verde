@@ -5,6 +5,7 @@ import { ThemeConfig } from './theme.config'
 import { SnackbarProvider } from 'notistack'
 import Mesero from './views/Mesero'
 import Mesa from './views/Mesa'
+import Cliente from './views/Cliente'
 import { useEffect } from 'react'
 import * as signalR from '@microsoft/signalr'
 
@@ -41,6 +42,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path='/mesero' element={<Mesero />} />
               <Route path='mesero/:mesa' element={<Mesa />} />
+              <Route path='/cliente' element={<Cliente />} />
             </Routes>
           </Layout>
         </ThemeConfig>
