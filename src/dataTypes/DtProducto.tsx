@@ -1,5 +1,5 @@
 export interface DtProducto {
-  id_Producto: string,
+  id_Producto: number,
   nombre: string,
   descripcion: string,
   precio: number,

@@ -8,12 +8,12 @@ import { getListProductos } from "../api/productos";
 import { DtProducto } from "../dataTypes/DtProducto";
 import spinnerStore from "../state/spinner";
 import { DtPedido } from "../dataTypes/DtPedido";
-import { getFecha, getHora } from "../assets/utils";
 import { crearPedido } from "../api/pedido";
 import { enqueueSnackbar } from "notistack";
+import { modificarMesa } from "../api/mesa";
 
 const Mesa = () => {
-  const { mesa } = useParams()
+  const { mesa, precioTotal } = useParams()
   const { changeState } = spinnerStore()
   const [menu, setMenu] = useState<DtProducto[]>([])
   const [showModal, setShowModal] = useState(false)
@@ -22,7 +22,7 @@ const Mesa = () => {
   const [obs, setObs] = useState('')
   const [openPedido, setOpenPedido] = useState(false)
 
-  const addProduct = (productId: string) => {
+  const addProduct = (productId: number) => {
     setShowModal(true)
     setProductSelected(productId)
   }
@@ -67,16 +67,18 @@ const Mesa = () => {
   }
   const postPedido = async () => {
     console.log(pedido)
-    const lista_IdProductos: Array<{
+    const list_IdProductos: Array<{
       id_Producto: number,
-      observacion: string
+      observaciones: string,
+      nombreProducto: string
     }> = [];
 
     pedido.forEach(elem => {
       for (let i = 0; i < elem.qty; i++) {
-        lista_IdProductos.push({
+        list_IdProductos.push({
           id_Producto: parseInt(elem.id),
-          observacion: elem.obs
+          observaciones: elem.obs,
+          nombreProducto: ''
         })
       }
     })
@@ -89,21 +91,26 @@ const Mesa = () => {
       username: 'fbauza2014@gmail.com',
       id_Mesa: mesa ? parseInt(mesa) : 0,
       estadoProceso: false,
-      hora_ingreso: getHora(),
-      fecha_ingreso: getFecha(),
+      hora_ingreso: new Date().toISOString(),
+      fecha_ingreso: new Date().toISOString(),
       numero_movil: '',
-      lista_IdProductos
+      list_IdProductos
     }
-    console.log(newPedido)
     try {
       changeState()
       const create = await crearPedido(newPedido)
       console.log(create)
+      if (create.isOk === false) throw new Error(create.message)
       enqueueSnackbar('Pedido creado', { variant: 'success' })
+      // Update mesa
+      if (!mesa) throw new Error('No se pudo actualizar la mesa')
+      if (!precioTotal) throw new Error('No se pudo actualizar la mesa')
+      const updateMesa = await modificarMesa({ id: parseInt(mesa), precioTotal: parseInt(precioTotal) + totalPedido })
+      console.log(updateMesa)
       changeState()
     }
     catch (err) {
-      enqueueSnackbar('Error al crear el pedido', { variant: 'error' })
+      enqueueSnackbar('Error al crear el pedido, ' + err, { variant: 'error' })
       changeState()
     }
   }
