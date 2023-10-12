@@ -11,6 +11,8 @@ import { DtPedido } from "../dataTypes/DtPedido";
 import { crearPedido } from "../api/pedido";
 import { enqueueSnackbar } from "notistack";
 import { modificarMesa } from "../api/mesa";
+import DialogCart from "../components/DialogCart";
+import ProductCard from "../components/ProductCard";
 
 const Mesa = () => {
   const { mesa, precioTotal } = useParams()
@@ -18,7 +20,7 @@ const Mesa = () => {
   const [menu, setMenu] = useState<DtProducto[]>([])
   const [showModal, setShowModal] = useState(false)
   const [pedido, setPedido] = useState<Array<DtProduct>>([])
-  const [productSelected, setProductSelected] = useState<null | string | number>(null);
+  const [productSelected, setProductSelected] = useState<number>(0);
   const [obs, setObs] = useState('')
   const [openPedido, setOpenPedido] = useState(false)
 
@@ -40,7 +42,7 @@ const Mesa = () => {
       }))
     } else {
       const aux: DtProduct = {
-        id: productSelected as string,
+        id: productSelected,
         product: menu.find(elem => elem.id_Producto == productSelected),
         obs,
         qty: 1
@@ -76,7 +78,7 @@ const Mesa = () => {
     pedido.forEach(elem => {
       for (let i = 0; i < elem.qty; i++) {
         list_IdProductos.push({
-          id_Producto: parseInt(elem.id),
+          id_Producto: elem.id,
           observaciones: elem.obs,
           nombreProducto: ''
         })
@@ -124,14 +126,7 @@ const Mesa = () => {
         </div>
 
         <section className="d-flex flex-wrap justify-content-around">
-          {menu.map(elem => {
-            return (
-              <article key={elem.id_Producto} className="carta-background" onClick={() => addProduct(elem.id_Producto)}>
-                <h5 className="text-center">{elem.nombre}</h5>
-                <p className="text-center">${elem.precio}</p>
-              </article>
-            )
-          })}
+          {menu.map(elem => (<ProductCard key={elem.id_Producto} elem={elem} addProduct={addProduct} />))}
         </section>
       </div>
       <dialog open={showModal} className="dialog-obs py-2">
@@ -142,37 +137,13 @@ const Mesa = () => {
           <Button startIcon={<AddShoppingCartIcon />} size="medium" onClick={confirmProduct}>Agregar</Button>
         </section>
       </dialog>
-      <dialog open={openPedido} className="dialog-cart">
-        <header>
-          <h5>Pedido</h5>
-          <hr />
-        </header>
-        <section className="d-flex flex-column">
-          {pedido.map(elem => {
-            return (
-              <article key={elem.id + elem.obs} className="p-2 rounded dialog-article">
-                <section className="d-flex justify-content-between">
-                  <div className="d-flex flex-column">
-                    <span>{elem.product?.nombre}</span>
-                    <span className="ms-4 text-secondary">{elem.obs}</span>
-                    <span className="ms-4 text-secondary">Cant: {elem.qty}</span>
-                  </div>
-                  <p>${elem.product?.precio}</p>
-                </section>
-                <div className="d-flex justify-content-end mt-2">
-                  <Button size="small" color="error" onClick={() => deleteProduct(elem)}>Eliminar</Button>
-                  {/* <Button size="small" sx={{ backgroundColor: '#f1f1f1', color: 'black' }} className="ms-5" onClick={() => editProduct()}>Editar</Button> */}
-                </div>
-              </article>
-            )
-          })}
-        </section>
-        <hr />
-        <footer className="d-flex justify-content-between mt-3 jus">
-          <Button size="small" color="error" onClick={() => setOpenPedido(false)}>Cancelar</Button>
-          <Button size="small" onClick={postPedido} >Enviar</Button>
-        </footer>
-      </dialog>
+      <DialogCart
+        open={openPedido}
+        setOpen={setOpenPedido}
+        pedido={pedido}
+        deleteProduct={deleteProduct}
+        postPedido={postPedido}
+      />
     </div>
   )
 }

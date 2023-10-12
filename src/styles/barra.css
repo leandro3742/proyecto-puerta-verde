@@ -1,0 +1,13 @@
+.search {
+  background-color: var(--color-input);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search > input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}

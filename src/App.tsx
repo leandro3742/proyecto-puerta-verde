@@ -11,7 +11,7 @@ import AdminHome from './views/admin/AdminHome'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import Cocina from './views/cocina/Cocina'
 import { BACKEND_URL } from './assets/constant'
-
+import Barra from './views/barra/Barra'
 function App() {
 
   useEffect(() => {
@@ -51,6 +51,10 @@ function App() {
 
               <Route path='/cocina' element={<ProtectedRoutes />}>
                 <Route index element={<Cocina />} />
+              </Route>
+
+              <Route path='/barra' element={<ProtectedRoutes />}>
+                <Route index element={<Barra />} />
               </Route>
 
               <Route path='/admin' element={<ProtectedRoutes />} >
