@@ -52,6 +52,7 @@ function App() {
                 <Route index element={<AdminHome />} />
                 <Route path='productos' element={<div>Productos</div>} />
                 {/* AGREGAR LAS RUTAS ACA */}
+                <Route path='clientes' element={<Cliente />} />
               </Route>
 
             </Routes>
