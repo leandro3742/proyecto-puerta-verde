@@ -10,12 +10,14 @@ import { useEffect } from 'react'
 import * as signalR from '@microsoft/signalr'
 import AdminHome from './views/admin/AdminHome'
 import ProtectedRoutes from './components/ProtectedRoutes'
-
+import Cocina from './views/cocina/Cocina'
+import { BACKEND_URL } from './assets/constant'
+import Barra from './views/barra/Barra'
 function App() {
 
   useEffect(() => {
     const hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:32768/chatHub", { withCredentials: true })
+      .withUrl(BACKEND_URL + "chatHub", { withCredentials: true })
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
@@ -45,7 +47,15 @@ function App() {
               <Route path='/' element={<ProtectedRoutes />}>
                 <Route index element={<div>Home</div>} />
                 <Route path='mesero' element={<Mesero />} />
-                <Route path='mesero/:mesa' element={<Mesa />} />
+                <Route path='mesero/:mesa/:precioTotal' element={<Mesa />} />
+              </Route>
+
+              <Route path='/cocina' element={<ProtectedRoutes />}>
+                <Route index element={<Cocina />} />
+              </Route>
+
+              <Route path='/barra' element={<ProtectedRoutes />}>
+                <Route index element={<Barra />} />
               </Route>
 
               <Route path='/admin' element={<ProtectedRoutes />} >

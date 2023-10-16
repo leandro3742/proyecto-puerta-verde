@@ -4,20 +4,20 @@ import { VitePWA } from "vite-plugin-pwa";
 
 const manifestForPlugin: Partial<any> = {
   registerType: 'autoUpdate',
-  includeAssets: ['vite.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+  includeAssets: ['loco.png', 'robots.txt', 'apple-touch-icon.png'],
   manifest: {
-    name: 'CPQ Deck',
-    short_name: 'CPQ Deck',
-    description: 'CPQ Deck',
-    theme_color: '#ffffff',
+    name: 'Puerta Verde',
+    short_name: 'Puerta Verde',
+    description: 'Puerta Verde',
+    theme_color: '#222430',
     icons: [
       {
-        src: '/vite.svg',
+        src: '/src/assets/logo.png',
         sizes: '192x192',
         type: 'image/png',
       }
     ],
-    background_color: '#ffffff',
+    background_color: '#222430',
     display: 'standalone',
     scope: '/',
     start_url: '/',

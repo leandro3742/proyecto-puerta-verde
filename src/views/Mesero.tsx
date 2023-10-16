@@ -24,14 +24,14 @@ const Mesero = () => {
       <section className='d-flex flex-wrap justify-content-around'>
         {mesas.map(elem => {
           return (
-            <Link to={`/mesero/${elem}`} key={elem.id_Mesa}>
+            <Link to={`/mesero/${elem.id_Mesa}/${elem.precioTotal}`} key={elem.id_Mesa}>
               <article className={`mesas-background ${elem.enUso ? 'mesa-ocupada' : 'mesa-vacia'}`}>
                 <div>
                   <h5 className='text-center'>Mesa {elem.id_Mesa}</h5>
                 </div>
                 {elem.enUso &&
                   <div className='mesas-total'>
-                    <p className='text-center'>$3000</p>
+                    <p className='text-center'>${elem.precioTotal}</p>
                   </div>
                 }
               </article>

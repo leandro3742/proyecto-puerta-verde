@@ -1,0 +1,7 @@
+.article-cocina{
+  background-color: var(--color-darkBlue);
+}
+
+.article-2:nth-child(even) {
+  background-color: var(--color-background);
+}

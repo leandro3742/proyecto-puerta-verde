@@ -16,3 +16,13 @@ export const crearPedido = async (Pedido: DtPedido) => {
     throw error
   }
 }
+
+export const listarPedidosActivos = async () => {
+  try {
+    const response = await fetch(BACKEND_URL + 'api/listarPedidosActivos')
+    const data: Array<DtPedido> = await response.json()
+    return data
+  } catch (error) {
+    throw error
+  }
+}

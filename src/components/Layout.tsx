@@ -17,10 +17,25 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <main>
       {showSpinner && <Spinner />}
       <div className="bg" style={{ opacity: showSpinner ? .5 : 1 }}>
-        <nav>
+        <nav className="d-flex align-items-center justify-content-between">
           <Link to='/login'>
             <img src={logo} id='logo' />
           </Link>
+
+          <section className="d-flex">
+            <Link className="mx-3 text-white" to='/mesero'>
+              <h5 className=''>Mesero</h5>
+            </Link>
+            <Link className="mx-3 text-white" to='/cocina'>
+              <h5 className=''>Cocina</h5>
+            </Link>
+            <Link className="mx-3 text-white" to='/barra'>
+              <h5 className=''>Barra</h5>
+            </Link>
+            <Link className="mx-3 text-white" to='/admin'>
+              <h5 className=''>Admin</h5>
+            </Link>
+          </section>
         </nav>
         {children}
       </div>

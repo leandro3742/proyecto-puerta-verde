@@ -1,5 +1,5 @@
 export interface DtProduct {
-  id: string,
+  id: number,
   product: any,
   obs: any,
   qty: number
