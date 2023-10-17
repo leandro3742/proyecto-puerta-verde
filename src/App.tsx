@@ -28,6 +28,13 @@ function App() {
         console.error(error);
       });
 
+    hubConnection.on("ReceiveMessage", (user, message) => {
+      console.log(user + " dice: " + message);
+    })
+    hubConnection.on("NewPedido", (pedido, message) => {
+      console.log(pedido);
+      console.log(message);
+    })
   }, []);
 
   return (
