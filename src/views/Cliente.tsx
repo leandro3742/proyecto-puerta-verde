@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import '../styles/cliente.css';
-import { agregarCliente, eliminarCliente, actualizarCliente, getListClientes } from '../api/cliente';
+import { agregarCliente, eliminarCliente, actualizarCliente, listarClientes } from '../api/cliente';
 import { DtCliente } from '../dataTypes/DtCliente';
 import spinnerStore from '../state/spinner';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { show_alerta } from '../functions';
-import { Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody} from '@mui/material';
+import { useSnackbar } from 'notistack';
+import ficha from '../assets/ficha.png'
 
 
 const Cliente = () => {
-    const { cliente } = useParams();
 	const { changeState } = spinnerStore();
 	const [clientes, setClientes] = useState<DtCliente[]>([]);
     const [id_Cli_Preferencial,setId]= useState('');
@@ -20,57 +17,54 @@ const Cliente = () => {
     const [telefono,setTelefono]= useState('');
 	const [saldo,setSaldo]= useState('');
 	const [fichasCanje,setFichas]= useState('');
-    const [operation,setOperation]= useState(1);
     const [title,setTitle]= useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredClientes, setFilteredClientes] = useState<DtCliente[]>([]);
     const [searchResults, setSearchResults] = useState(true);
-    
-    // Función para filtrar los clientes
-    const filterClientes = () => {
-        const filteredData = clientes.filter((cliente) => {
-            const fullName = cliente.nombre + ' ' + cliente.apellido;
-            return fullName.toLowerCase().includes(searchTerm.toLowerCase());
-            });
-
-        // Actualiza el estado de búsqueda
-        setSearchResults(filteredData.length > 0);
-
-        // Actualiza filteredClientes
-        setFilteredClientes(filteredData);
-    };
+    const { enqueueSnackbar } = useSnackbar()
 
     useEffect(() => {
-        filterClientes();
-    }, [searchTerm]);
+        setFilteredClientes(clientes.filter(elem => elem.nombre.toLowerCase().includes(searchTerm.toLowerCase())));
+    }, [searchTerm, clientes]);
 
 	useEffect(() => {
-        const elemento = document.getElementById('modalClientes');
-        if (elemento) {
-            elemento.classList.remove('show');
-            elemento.style.display = 'none';
-        }
-        const elemento2 = document.getElementById('modalClientes2');
-        if (elemento2) {
-            elemento2.classList.remove('show');
-            elemento2.style.display = 'none';
-        }
+        controlModal('modalClientes', 'cerrar');
+        controlModal('modalClientes2', 'cerrar');
 		changeState();
 	    // Si la barra de búsqueda está vacía, carga todos los clientes
-        if (searchTerm === '') {
-            getListClientes()
+        listarClientes()
+        .then((res) => {
+            setClientes(res);
+            setFilteredClientes(res);
+            setSearchResults(true); // Se encontraron resultados
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+            setSearchResults(true); // Finaliza la búsqueda
+            changeState();
+        });
+    }, []);
+
+    const obtenerClientes = () => {
+        listarClientes()
             .then((res) => {
-                setClientes(res);
-                setFilteredClientes(res);
-                setSearchResults(true); // Se encontraron resultados
-            })
-            .catch((err) => console.log(err))
-            .finally(() => {
-                setSearchResults(true); // Finaliza la búsqueda
-                changeState();
-            });
+            setClientes(res);
+            setFilteredClientes(res);
+        });
+    };
+
+    const controlModal = (modal: string, accion: string) => {
+        const elemento = document.getElementById(modal);
+        if (elemento) { // Verificar si elemento no es null
+            if (accion === 'abrir') {
+                elemento.classList.add('show');
+                elemento.style.display = 'block';
+            } else if (accion === 'cerrar') {
+                elemento.classList.remove('show');
+                elemento.style.display = 'none';
+            }
         }
-    }, [searchTerm]);
+    };
 
     const openModal = () => {
         setId(id_Cli_Preferencial.toString());
@@ -80,16 +74,8 @@ const Cliente = () => {
         setSaldo(saldo.toString());
         setFichas(fichasCanje.toString());
         setTitle('Editar Cliente');
-        const elemento = document.getElementById('modalClientes');
-        if (elemento) {
-            elemento.classList.add('show');
-            elemento.style.display = 'block';
-        }
-        const elemento2 = document.getElementById('modalClientes2');
-        if (elemento2) {
-            elemento2.classList.remove('show');
-            elemento2.style.display = 'none';
-        }
+        controlModal('modalClientes', 'abrir');
+        controlModal('modalClientes2', 'cerrar');
     };
       
     const openModal2 = () => {
@@ -99,23 +85,19 @@ const Cliente = () => {
         setSaldo('0');
         setFichas('0');
         setTitle('Registrar Cliente');
-        const elemento = document.getElementById('modalClientes3');
-        if (elemento) {
-            elemento.classList.add('show');
-            elemento.style.display = 'block';
-        }
+        controlModal('modalClientes3', 'abrir');
     };
 
     const crearCliente = async (nombre: string, apellido: string, telefono: string, saldo: string, fichasCanje: string) => {
         setId('0');
         if(nombre.trim() === ''){
-            show_alerta('Escribe el nombre del Cliente','warning');
+            enqueueSnackbar('Escribe el nombre del Cliente', { variant: 'warning' })
         }
 		else if(apellido.trim() === ''){
-            show_alerta('Escribe el apellido del Cliente','warning');
+            enqueueSnackbar('Escribe el apellido del Cliente', { variant: 'warning' })
         }
         else if(telefono.trim() === ''){
-            show_alerta('Escribe el telefono del Cliente','warning');
+            enqueueSnackbar('Escribe el telefono del Cliente', { variant: 'warning' })
         }
         else{
             const aux: DtCliente = {
@@ -127,9 +109,6 @@ const Cliente = () => {
                 registro_Activo: true,
                 fichasCanje: parseInt(fichasCanje), // Convierte fichasCanje a número entero
             };
-
-            console.log("El cliente es: "+aux.id_Cli_Preferencial+aux.nombre+aux.apellido+aux.telefono+aux.saldo+aux.fichasCanje+aux.registro_Activo)
-    
             try {
                 const response = await agregarCliente(aux);
                 if (response.statusOk === true) {
@@ -137,31 +116,32 @@ const Cliente = () => {
                     if (btnCerrar) {
                         btnCerrar.click();
                     }
-                    show_alerta(response.statusMessage, 'success');
-                    getListClientes();
+                    enqueueSnackbar(response.statusMessage, { variant: 'success' })
+                    obtenerClientes();
                     setNombre('');
                     setApellido('');
                     setTelefono('');
                     setSaldo('');
                     setFichas('');
                 } else {
-                    show_alerta(response.statusMessage, 'error');
+                    enqueueSnackbar(response.statusMessage, { variant: 'error' })
                 }
             } catch (error) {
-                show_alerta("Error inesperado", 'error');
+                enqueueSnackbar('Error inesperado', { variant: 'error' })
+                
             }
         }
     }
 
     const modificarCliente = async (nombre: string, apellido: string, telefono: string, saldo: string, fichasCanje: string) => {
         if(nombre.trim() === ''){
-            show_alerta('Escribe el nombre del Cliente','warning');
+            enqueueSnackbar('Escribe el nombre del Cliente', { variant: 'warning' })
         }
 		else if(apellido.trim() === ''){
-            show_alerta('Escribe el apellido del Cliente','warning');
+            enqueueSnackbar('Escribe el apellido del Cliente', { variant: 'warning' })
         }
         else if(telefono.trim() === ''){
-            show_alerta('Escribe el telefono del Cliente','warning');
+            enqueueSnackbar('Escribe el telefono del Cliente', { variant: 'warning' })
         }
         else{
             const aux: DtCliente = {
@@ -181,13 +161,13 @@ const Cliente = () => {
                     if (btnCerrar) {
                         btnCerrar.click();
                     }
-                    show_alerta(response.statusMessage, 'success');
-                    getListClientes();
+                    enqueueSnackbar(response.statusMessage, { variant: 'success' })
+                    obtenerClientes();
                 } else {
-                    show_alerta(response.statusMessage, 'error');
+                    enqueueSnackbar(response.statusMessage, { variant: 'error' })
                 }
             } catch (error) {
-                show_alerta("Error inesperado", 'error');
+                enqueueSnackbar('Error inesperado', { variant: 'error' })
             }
         }
     }
@@ -200,13 +180,14 @@ const Cliente = () => {
                 if (btnCerrar) {
                     btnCerrar.click();
                 }
-                show_alerta(response.statusMessage, 'success');
-                getListClientes();
+                enqueueSnackbar(response.statusMessage, { variant: 'success' })
+                obtenerClientes();
+                controlModal('modalClientes2', 'cerrar');
             } else {
-                show_alerta(response.statusMessage, 'error');
+                enqueueSnackbar(response.statsMessage, { variant: 'error' })
             }
         } catch (error) {
-            show_alerta("Error inesperado", 'error');
+            enqueueSnackbar('Error inesperado', { variant: 'error' })
         }
     }
 
@@ -218,57 +199,26 @@ const Cliente = () => {
         setSaldo(saldo.toString());
         setFichas(fichasCanje.toString());
         setTitle('Información del Cliente');
-        const elemento = document.getElementById('modalClientes2');
-        if (elemento) {
-            elemento.classList.add('show');
-            elemento.style.display = 'block';
-        }
-    }
-
-    const cerrarModal = (modal: number) =>{
-        if(modal === 1){
-            const elemento = document.getElementById('modalClientes');
-            if (elemento) {
-                elemento.classList.remove('show');
-                elemento.style.display = 'none';
-            }
-        }else  if(modal === 2){
-            const elemento = document.getElementById('modalClientes2');
-            if (elemento) {
-                elemento.classList.remove('show');
-                elemento.style.display = 'none';
-            }
-        }else  if(modal === 3){
-            const elemento = document.getElementById('modalClientes3');
-            if (elemento) {
-                elemento.classList.remove('show');
-                elemento.style.display = 'none';
-            }
-        }else{
-            const elemento = document.getElementById('modalClientes');
-            if (elemento) {
-                elemento.classList.remove('show');
-                elemento.style.display = 'none';
-            }
-        }
-        
+        controlModal('modalClientes2', 'abrir');
     }
 
   return (
     <div className='App'>
         <div className='container-fluid'>
-            <div className='row mt-3'>
-                <div className='col-md-6 d-flex justify-content-start align-items-center'>
+            <div className='mt-3'>
+                <div className='mt-3 d-flex justify-content-end'>
+                    <button onClick={() => openModal2()} className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalClientes'>
+                    <i className='fa-solid fa-circle-plus'></i> Añadir
+                    </button>
+                </div>  
+            </div>
+            <div className='mt-3'>
+                <div className='d-flex justify-content-start align-items-center'>
                     <input type="text" id='busqueda' placeholder="Buscar clientes" value={searchTerm}
                         onChange={(e)=>setSearchTerm(e.target.value)}
                         className="search-input form-control"
                     ></input>
                 </div>
-                <div className='col-md-6 d-flex justify-content-end'>
-                    <button onClick={() => openModal2()} className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalClientes'>
-                    <i className='fa-solid fa-circle-plus'></i> Añadir
-                    </button>
-                </div>  
             </div>
             <div className='row mt-3'>
                 <div className='col-12 col-lg-8 offset-0 offset-lg-2'>
@@ -288,9 +238,11 @@ const Cliente = () => {
 								  <TableRow key={index}>
 									<TableCell>{elem.nombre + ' ' + elem.apellido}</TableCell>
 									<TableCell>{elem.saldo}</TableCell>
-									<TableCell>{elem.fichasCanje}</TableCell>
+                                    <TableCell><img src={ficha} alt="Ficha" className="img-fichas"/>
+                                               {" x "+elem.fichasCanje}
+                                    </TableCell>
 									<TableCell>
-									   <Button size="small" style={{ marginRight: '5px' }} color="primary" onClick={() => verCliente(elem.id_Cli_Preferencial,elem.nombre,elem.apellido,elem.telefono,elem.saldo,elem.fichasCanje)}>
+									   <Button size="small" style={{ marginRight: '5px'}} color="primary" onClick={() => verCliente(elem.id_Cli_Preferencial,elem.nombre,elem.apellido,elem.telefono,elem.saldo,elem.fichasCanje)}>
 										    Ver
 									   </Button>
 									  
@@ -347,7 +299,7 @@ const Cliente = () => {
                         </div>
                     </div>
                     <div className='modal-footer'>
-                        <Button onClick={() => cerrarModal(1)} type='button' id='btnCerrar' className='btn btn-secondary' data-bs-dismiss='modal'>
+                        <Button onClick={() => controlModal('modalClientes', 'cerrar')} type='button' id='btnCerrar' className='btn btn-secondary' data-bs-dismiss='modal'>
                             Cerrar
                         </Button>
                     </div>
@@ -391,7 +343,7 @@ const Cliente = () => {
                         <Button size="small" style={{ marginRight: '5px' }} color="primary" onClick={()=>deleteCliente()}>
                             Eliminar
                         </Button>
-                        <Button size="small" style={{ marginRight: '5px' }} color="primary" onClick={() => cerrarModal(2)} type='button' id='btnCerrar'>
+                        <Button size="small" style={{ marginRight: '5px' }} color="primary" onClick={() => controlModal('modalClientes2', 'cerrar')} type='button' id='btnCerrar'>
                             Cerrar
                         </Button>
                     </div>
@@ -438,7 +390,7 @@ const Cliente = () => {
                         </div>
                     </div>
                     <div className='modal-footer'>
-                        <Button onClick={() => cerrarModal(3)} type='button' id='btnCerrar' className='btn btn-secondary' data-bs-dismiss='modal'>
+                        <Button onClick={() => controlModal('modalClientes3', 'cerrar')} type='button' id='btnCerrar' className='btn btn-secondary' data-bs-dismiss='modal'>
                             Cerrar
                         </Button>
                     </div>

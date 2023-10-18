@@ -22,7 +22,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
             <img src={logo} id='logo' />
           </Link>
 
-          <section className="d-flex">
+          {/*<section className="d-flex">
             <Link className="mx-3 text-white" to='/mesero'>
               <h5 className=''>Mesero</h5>
             </Link>
@@ -35,7 +35,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
             <Link className="mx-3 text-white" to='/admin'>
               <h5 className=''>Admin</h5>
             </Link>
-          </section>
+  </section>*/}
         </nav>
         {children}
       </div>

@@ -13,6 +13,7 @@ import ProtectedRoutes from './components/ProtectedRoutes'
 import Cocina from './views/cocina/Cocina'
 import { BACKEND_URL } from './assets/constant'
 import Barra from './views/barra/Barra'
+import Ingrediente from './views/Ingrediente'
 function App() {
 
   useEffect(() => {
@@ -63,6 +64,7 @@ function App() {
                 <Route path='productos' element={<div>Productos</div>} />
                 {/* AGREGAR LAS RUTAS ACA */}
                 <Route path='clientes' element={<Cliente />} />
+                <Route path='ingredientes' element={<Ingrediente />}/>
               </Route>
 
             </Routes>

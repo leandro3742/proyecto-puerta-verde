@@ -1,14 +1,14 @@
 import { BACKEND_URL } from "../assets/constant";
-import { DtCliente } from "../dataTypes/DtCliente";
+import { DtIngrediente } from "../dataTypes/DtIngrediente";
 
-export const agregarCliente = async (Cliente: DtCliente) => {
+export const agregarIngrediente = async (Ingrediente: DtIngrediente) => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/agregarCliente', {
+    const response = await fetch(BACKEND_URL + 'api/agregarIngrediente', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(Cliente)
+      body: JSON.stringify(Ingrediente)
     })
     const data = await response.json()
     return data;
@@ -17,14 +17,15 @@ export const agregarCliente = async (Cliente: DtCliente) => {
   }
 }
 
-export const actualizarCliente = async (Cliente: DtCliente) => {
+export const actualizarIngrediente = async (Ingrediente: DtIngrediente) => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/actualizarCliente', {
+    console.log(Ingrediente);
+    const response = await fetch(BACKEND_URL + 'api/modificarIngrediente', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(Cliente)
+      body: JSON.stringify(Ingrediente)
     })
     const data = await response.json()
     return data;
@@ -33,9 +34,9 @@ export const actualizarCliente = async (Cliente: DtCliente) => {
   }
 }
 
-export const eliminarCliente = async (idCliente: number) => {
+/*export const eliminarIngrediente = async (idIngrediente: number) => {
   try {
-    const response = await fetch(BACKEND_URL + `api/bajaCliente/${idCliente}`, {
+    const response = await fetch(BACKEND_URL + `api/bajaIngrediente/${idIngrediente}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -46,11 +47,11 @@ export const eliminarCliente = async (idCliente: number) => {
   } catch (error) {
     throw error;
   }
-}
+}*/
 
-export const listarClientes = async () => {
+export const listarIngredientes = async () => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/listarCliente');
+    const response = await fetch(BACKEND_URL + 'api/listarIngredientes');
     const data = await response.json();
     return data;
   } catch (err) {
