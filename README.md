@@ -4,7 +4,7 @@
 Este proyecto es una aplicación web que permite al cliente llevar el control de los pedidos que realiza a la empresa Puerta Verde, así como también llevar el control de los clientes y productos que se ofrecen.
 
 ## Instalación
-Para poder instalar el proyecto se debe tener instalado [Node.js](https://nodejs.org/es/) y [MongoDB](https://www.mongodb.com/es). Una vez instalado se debe clonar el repositorio y ejecutar el siguiente comando en la carpeta raíz del proyecto:
+Para poder instalar el proyecto se debe tener instalado [Node.js](https://nodejs.org/es/). Una vez instalado se debe clonar el repositorio y ejecutar el siguiente comando en la carpeta raíz del proyecto:
 ```bash
 npm install
 ```
@@ -15,14 +15,14 @@ Para ejecutar el proyecto se debe ejecutar el siguiente comando en la carpeta ra
 ```bash
 npm start
 ```
-Este comando ejecutará el proyecto en el puerto 3000, por lo que se puede acceder a la aplicación web en la siguiente dirección: [http://localhost:3000](http://localhost:3000)
+Este comando ejecutará el proyecto en el puerto 5173, por lo que se puede acceder a la aplicación web en la siguiente dirección: [http://localhost:5173](http://localhost:5173)
 
 ## Desarrollo
 Para poder desarrollar en el proyecto se debe ejecutar el siguiente comando en la carpeta raíz del proyecto:
 ```bash
 npm run dev
 ```
-Este comando ejecutará el proyecto en el puerto 3000, por lo que se puede acceder a la aplicación web en la siguiente dirección: [http://localhost:3000](http://localhost:3000)
+Este comando ejecutará el proyecto en el puerto 5173, por lo que se puede acceder a la aplicación web en la siguiente dirección: [http://localhost:5173](http://localhost:5173)
 
 ## Licencia
 [MIT](https://choosealicense.com/licenses/mit/)
@@ -45,6 +45,6 @@ Este comando ejecutará el proyecto en el puerto 3000, por lo que se puede acced
   - **/src/views**: Contiene las vistas de la aplicación web.
   - **/src/api**: Contiene los las peticiones a la API.
   - **/src/styles**: Contiene los estilos globales de la aplicación web.
-  - **/src/types**: Contiene los tipos de datos de la aplicación web.
+  - **/src/dataTypes**: Contiene los tipos de datos de la aplicación web.
   - **/src/state**: Contiene el estado global de la aplicación web.
   - **/src/assets**: Contiene los recursos de la aplicación web.
