@@ -19,7 +19,6 @@ export const agregarIngrediente = async (Ingrediente: DtIngrediente) => {
 
 export const actualizarIngrediente = async (Ingrediente: DtIngrediente) => {
   try {
-    console.log(Ingrediente);
     const response = await fetch(BACKEND_URL + 'api/modificarIngrediente', {
       method: 'PUT',
       headers: {

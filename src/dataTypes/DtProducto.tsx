@@ -3,4 +3,5 @@ export interface DtProducto {
   nombre: string,
   descripcion: string,
   precio: number,
+  tipo: number,
 }

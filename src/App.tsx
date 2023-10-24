@@ -5,7 +5,7 @@ import { ThemeConfig } from './theme.config'
 import { SnackbarProvider } from 'notistack'
 import Mesero from './views/Mesero'
 import Mesa from './views/Mesa'
-import Cliente from './views/Cliente'
+import Cliente from './views/admin/Cliente'
 import { useEffect } from 'react'
 import * as signalR from '@microsoft/signalr'
 import AdminHome from './views/admin/AdminHome'
@@ -13,7 +13,8 @@ import ProtectedRoutes from './components/ProtectedRoutes'
 import Cocina from './views/cocina/Cocina'
 import { BACKEND_URL } from './assets/constant'
 import Barra from './views/barra/Barra'
-import Ingrediente from './views/Ingrediente'
+import Ingrediente from './views/admin/Ingrediente'
+import Producto from './views/admin/Producto'
 function App() {
 
   useEffect(() => {
@@ -68,10 +69,10 @@ function App() {
 
               <Route path='/admin' element={<ProtectedRoutes />} >
                 <Route index element={<AdminHome />} />
-                <Route path='productos' element={<div>Productos</div>} />
                 {/* AGREGAR LAS RUTAS ACA */}
                 <Route path='clientes' element={<Cliente />} />
                 <Route path='ingredientes' element={<Ingrediente />}/>
+                <Route path='productos' element={<Producto />}/>
               </Route>
 
             </Routes>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import '../styles/cliente.css';
-import { agregarCliente, eliminarCliente, actualizarCliente, listarClientes } from '../api/cliente';
-import { DtCliente } from '../dataTypes/DtCliente';
-import spinnerStore from '../state/spinner';
+import '../../styles/cliente.css';
+import { agregarCliente, eliminarCliente, actualizarCliente, listarClientes } from '../../api/cliente';
+import { DtCliente } from '../../dataTypes/DtCliente';
+import spinnerStore from '../../state/spinner';
 import { Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody} from '@mui/material';
 import { useSnackbar } from 'notistack';
-import ficha from '../assets/ficha.png'
+import ficha from '../../assets/ficha.png'
 
 
 const Cliente = () => {

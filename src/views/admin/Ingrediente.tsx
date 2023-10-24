@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import '../styles/ingrediente.css';
-import spinnerStore from '../state/spinner';
+import '../../styles/ingrediente.css';
+import spinnerStore from '../../state/spinner';
 import { Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody} from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { DtIngrediente } from '../dataTypes/DtIngrediente';
-import { DtCategoria } from '../dataTypes/DtCategoria';
-import { actualizarIngrediente, agregarIngrediente, listarIngredientes } from '../api/ingrediente';
-import { listarCategorias } from '../api/categoria';
+import { DtIngrediente } from '../../dataTypes/DtIngrediente';
+import { DtCategoria } from '../../dataTypes/DtCategoria';
+import { actualizarIngrediente, agregarIngrediente, listarIngredientes } from '../../api/ingrediente';
+import { listarCategorias } from '../../api/categoria';
 
 
 const Ingrediente = () => {
@@ -101,7 +101,7 @@ const Ingrediente = () => {
             const aux: DtIngrediente = {
                 id_Ingrediente: 0,
                 nombre,
-                stock: parseFloat(stock),
+                stock: parseInt(stock),
                 id_Categoria: parseInt(id_Categoria)
             };
             try {
@@ -254,7 +254,7 @@ const Ingrediente = () => {
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Stock<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='apellido' className='form-control' value={stock}
+                            <input type='text' id='stock' className='form-control' value={stock}
                             onChange={(e)=> setStock(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
@@ -300,7 +300,7 @@ const Ingrediente = () => {
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Stock<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='apellido' className='form-control' value={stock}></input>
+                            <input type='text' id='stock' className='form-control' value={stock}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Categoria<i className='fa-solid fa-dollar-sign'></i></span>
@@ -349,7 +349,7 @@ const Ingrediente = () => {
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Stock<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='apellido' className='form-control' value={stock}
+                            <input type='text' id='stock' className='form-control' value={stock}
                             onChange={(e)=> setStock(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
