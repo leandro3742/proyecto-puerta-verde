@@ -1,21 +1,27 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { SnackbarProvider } from 'notistack'
+import { ThemeConfig } from './theme.config'
+import * as signalR from '@microsoft/signalr'
+import { BACKEND_URL } from './assets/constant'
+
+import { cocinaStore } from './state/cocina'
 import Layout from './components/Layout'
 import Login from './views/Login'
-import { ThemeConfig } from './theme.config'
-import { SnackbarProvider } from 'notistack'
 import Mesero from './views/Mesero'
 import Mesa from './views/Mesa'
-import { useEffect, useState } from 'react'
-import * as signalR from '@microsoft/signalr'
+import Cliente from './views/admin/Cliente'
 import AdminHome from './views/admin/AdminHome'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import Cocina from './views/cocina/Cocina'
-import { BACKEND_URL } from './assets/constant'
 import Barra from './views/barra/Barra'
-import { cocinaStore } from './state/cocina'
+import Ingrediente from './views/admin/Ingrediente'
+import Producto from './views/admin/Producto'
+import Caja from './views/Caja'
+
 function App() {
   const { addNotification } = cocinaStore()
-  const [startConnection, setStartConnection] = useState<boolean>(false)
+
   useEffect(() => {
     const hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(BACKEND_URL + "chatHub", { withCredentials: true })
@@ -24,7 +30,6 @@ function App() {
 
     hubConnection.start()
       .then(() => {
-        setStartConnection(true)
         console.log("Conexión SignalR establecida");
       })
       .catch(error => {
@@ -70,10 +75,15 @@ function App() {
 
               <Route path='/admin' element={<ProtectedRoutes />} >
                 <Route index element={<AdminHome />} />
-                <Route path='productos' element={<div>Productos</div>} />
                 {/* AGREGAR LAS RUTAS ACA */}
+                <Route path='clientes' element={<Cliente />} />
+                <Route path='ingredientes' element={<Ingrediente />} />
+                <Route path='productos' element={<Producto />} />
               </Route>
 
+              <Route path='/caja' element={<ProtectedRoutes />}>
+                <Route index element={<Caja />} />
+              </Route>
             </Routes>
           </Layout>
         </ThemeConfig>

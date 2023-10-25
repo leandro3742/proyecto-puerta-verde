@@ -42,6 +42,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
               <Link className="mx-3 text-white" to='/barra'>
                 <h5 className=''>Barra</h5>
               </Link>
+              <Link className="mx-3 text-white" to='/caja'>
+                <h5 className=''>Cajero</h5>
+              </Link>
               <Link className="mx-3 text-white" to='/admin'>
                 <h5 className=''>Admin</h5>
               </Link>
@@ -79,6 +82,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 <MenuItem onClick={handleClose}>
                   <Link className="text-white" to='/barra'>
                     Barra
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link className="mx-3 text-white" to='/caja'>
+                    <h5 className=''>Cajero</h5>
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>

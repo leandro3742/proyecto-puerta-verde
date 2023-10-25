@@ -1,33 +1,37 @@
 import { Button } from "@mui/material"
 import '../../styles/cocina.css'
 import { useEffect, useState } from "react"
-import { listarPedidosActivos } from "../../api/pedido"
+import { finalizarPedido, listarPedidosPorTipo } from "../../api/pedido"
 import spinnerStore from "../../state/spinner"
 import { DtListaProductos, DtListaProductosBackend, DtPedido } from "../../dataTypes/DtPedido"
 import { cocinaStore } from "../../state/cocina"
+import { enqueueSnackbar } from "notistack"
 
 const Cocina = () => {
   const { notifications } = cocinaStore()
   const { changeState } = spinnerStore()
   const [pedidos, setPedidos] = useState<Array<DtPedido>>([])
-
+  const [firstCall, setFirstCall] = useState<boolean>(false)
   useEffect(() => {
     changeState()
-    listarPedidosActivos().then(res => {
-      console.log(res);
-      setPedidos(res)
-    })
+    listarPedidosPorTipo(1)
+      .then(res => {
+        console.log(res);
+        setPedidos(res)
+      })
       .catch(err => console.log(err))
       .finally(() => changeState())
+    setFirstCall(true)
   }, [])
 
   useEffect(() => {
     console.log(notifications)
-    // changeState()
-    // listarPedidosActivos().then(res => setPedidos(res))
-    //   .catch(err => console.log(err))
-    //   .finally(() => changeState())
+    if (!firstCall) return
+    listarPedidosPorTipo(1)
+      .then(res => setPedidos(res))
+      .catch(err => console.log(err))
   }, [notifications])
+
   const parseListProducts = (list: Array<DtListaProductosBackend>): Array<DtListaProductos> => {
     const newList: Array<DtListaProductos> = []
     list.forEach(elem => {
@@ -40,7 +44,16 @@ const Cocina = () => {
     })
     return newList
   }
-  const completeOrder = () => { }
+  const completeOrder = (id: number) => {
+    changeState()
+    finalizarPedido(id)
+      .then((res) => {
+        if (!res.statusOk) throw res.statusMessage
+        setPedidos(pedidos.filter(pedido => pedido.id_Pedido != id))
+      })
+      .catch(err => enqueueSnackbar(err, { variant: 'error' }))
+      .finally(() => changeState())
+  }
 
   return (
     <div className="m-3 d-flex flex-wrap d-flex justify-content-around">
@@ -60,7 +73,7 @@ const Cocina = () => {
               )
             })}
             <div className="d-flex justify-content-end">
-              <Button onClick={completeOrder}>Orden pronta</Button>
+              <Button onClick={() => completeOrder(pedido.id_Pedido)}>Orden pronta</Button>
             </div>
           </article>
         )

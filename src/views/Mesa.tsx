@@ -43,7 +43,11 @@ const Mesa = () => {
     } else {
       const aux: DtProduct = {
         id: productSelected,
-        product: menu.find(elem => elem.id_Producto == productSelected),
+        product: menu.find(elem => elem.id_Producto == productSelected)
+          ?
+          menu.find(elem => elem.id_Producto == productSelected)!
+          :
+          {} as DtProducto,
         obs,
         qty: 1
       }
@@ -68,51 +72,60 @@ const Mesa = () => {
     setPedido(aux)
   }
   const postPedido = async () => {
-    console.log(pedido)
-    const list_IdProductos: Array<{
-      id_Producto: number,
-      observaciones: string,
-      nombreProducto: string
-    }> = [];
-
+    const typesAux: any = {}
     pedido.forEach(elem => {
-      for (let i = 0; i < elem.qty; i++) {
+      if (!typesAux[elem.product.tipo]) typesAux[elem.product.tipo] = []
+      typesAux[elem.product.tipo].push(elem)
+    })
+
+    for (const key in typesAux) {
+      const list = typesAux[key]
+      const list_IdProductos: Array<{
+        id_Producto: number,
+        observaciones: string,
+        nombreProducto: string
+      }> = [];
+
+      for (let i = 0; i < list.length; i++) {
+        const elem = list[i];
         list_IdProductos.push({
           id_Producto: elem.id,
           observaciones: elem.obs,
           nombreProducto: ''
         })
       }
-    })
-    const totalPedido = pedido.reduce((acc, elem) => acc + (elem.product?.precio || 0) * elem.qty, 0)
-    const newPedido: DtPedido = {
-      id_Pedido: 0,
-      valorPedido: totalPedido,
-      id_Cli_preferencial: 0,
-      pago: false,
-      username: 'fbauza2014@gmail.com',
-      id_Mesa: mesa ? parseInt(mesa) : 0,
-      estadoProceso: false,
-      hora_ingreso: new Date().toISOString(),
-      fecha_ingreso: new Date().toISOString(),
-      numero_movil: '',
-      list_IdProductos
+      const totalPedido = list.reduce((acc: number, elem: DtProduct) => acc + (elem.product?.precio || 0) * elem.qty, 0)
+      const newPedido: DtPedido = {
+        id_Pedido: 0,
+        valorPedido: totalPedido,
+        id_Cli_preferencial: 0,
+        pago: false,
+        username: 'fbauza2014@gmail.com',
+        id_Mesa: mesa ? parseInt(mesa) : 0,
+        estadoProceso: false,
+        fecha_ingreso: new Date().toISOString(),
+        numero_movil: '',
+        list_IdProductos,
+        tipo: parseInt(key)
+      }
+      try {
+        changeState()
+        const create = await crearPedido(newPedido)
+        if (create.isOk === false) throw new Error(create.message)
+        enqueueSnackbar('Pedido creado', { variant: 'success' })
+        // Update mesa
+        if (!mesa) throw new Error('No se pudo actualizar la mesa')
+        if (!precioTotal) throw new Error('No se pudo actualizar la mesa')
+        await modificarMesa({ id: parseInt(mesa), precioTotal: parseInt(precioTotal) + totalPedido })
+        changeState()
+      }
+      catch (err) {
+        enqueueSnackbar('Error al crear el pedido, ' + err, { variant: 'error' })
+        changeState()
+      }
     }
-    try {
-      changeState()
-      const create = await crearPedido(newPedido)
-      if (create.isOk === false) throw new Error(create.message)
-      enqueueSnackbar('Pedido creado', { variant: 'success' })
-      // Update mesa
-      if (!mesa) throw new Error('No se pudo actualizar la mesa')
-      if (!precioTotal) throw new Error('No se pudo actualizar la mesa')
-      await modificarMesa({ id: parseInt(mesa), precioTotal: parseInt(precioTotal) + totalPedido })
-      changeState()
-    }
-    catch (err) {
-      enqueueSnackbar('Error al crear el pedido, ' + err, { variant: 'error' })
-      changeState()
-    }
+    setPedido([])
+    setOpenPedido(false)
   }
 
   return (

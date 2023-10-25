@@ -1,6 +1,9 @@
+import { DtProducto } from "./DtProducto";
+
 export interface DtProduct {
   id: number,
-  product: any,
+  product: DtProducto,
   obs: any,
   qty: number
 }
+
