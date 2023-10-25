@@ -9,3 +9,13 @@ export const getListProductos = async () => {
     throw err;
   }
 }
+
+export const getListByTipo = async (tipo: string) => {
+  try {
+    const response = await fetch(BACKEND_URL + 'api/listarProductosPorTipo' + tipo);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}

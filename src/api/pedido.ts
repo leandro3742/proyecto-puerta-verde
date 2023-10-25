@@ -26,3 +26,19 @@ export const listarPedidosActivos = async () => {
     throw error
   }
 }
+
+export const updatePedido = async (Pedido: DtPedido) => {
+  try {
+    const response = await fetch(BACKEND_URL + 'api/modificarPedido', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(Pedido)
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    throw error
+  }
+}

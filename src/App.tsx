@@ -5,15 +5,17 @@ import { ThemeConfig } from './theme.config'
 import { SnackbarProvider } from 'notistack'
 import Mesero from './views/Mesero'
 import Mesa from './views/Mesa'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import * as signalR from '@microsoft/signalr'
 import AdminHome from './views/admin/AdminHome'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import Cocina from './views/cocina/Cocina'
 import { BACKEND_URL } from './assets/constant'
 import Barra from './views/barra/Barra'
+import { cocinaStore } from './state/cocina'
 function App() {
-
+  const { addNotification } = cocinaStore()
+  const [startConnection, setStartConnection] = useState<boolean>(false)
   useEffect(() => {
     const hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(BACKEND_URL + "chatHub", { withCredentials: true })
@@ -22,6 +24,7 @@ function App() {
 
     hubConnection.start()
       .then(() => {
+        setStartConnection(true)
         console.log("Conexión SignalR establecida");
       })
       .catch(error => {
@@ -31,8 +34,9 @@ function App() {
     hubConnection.on("ReceiveMessage", (user, message) => {
       console.log(user + " dice: " + message);
     })
-    hubConnection.on("NewPedido", (pedido, message) => {
-      console.log(pedido);
+
+    hubConnection.on("NewPedido", (message) => {
+      addNotification(message);
       console.log(message);
     })
   }, []);

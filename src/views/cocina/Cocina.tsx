@@ -4,19 +4,30 @@ import { useEffect, useState } from "react"
 import { listarPedidosActivos } from "../../api/pedido"
 import spinnerStore from "../../state/spinner"
 import { DtListaProductos, DtListaProductosBackend, DtPedido } from "../../dataTypes/DtPedido"
+import { cocinaStore } from "../../state/cocina"
 
 const Cocina = () => {
-
+  const { notifications } = cocinaStore()
   const { changeState } = spinnerStore()
   const [pedidos, setPedidos] = useState<Array<DtPedido>>([])
 
   useEffect(() => {
     changeState()
-    listarPedidosActivos().then(res => setPedidos(res))
+    listarPedidosActivos().then(res => {
+      console.log(res);
+      setPedidos(res)
+    })
       .catch(err => console.log(err))
       .finally(() => changeState())
   }, [])
 
+  useEffect(() => {
+    console.log(notifications)
+    // changeState()
+    // listarPedidosActivos().then(res => setPedidos(res))
+    //   .catch(err => console.log(err))
+    //   .finally(() => changeState())
+  }, [notifications])
   const parseListProducts = (list: Array<DtListaProductosBackend>): Array<DtListaProductos> => {
     const newList: Array<DtListaProductos> = []
     list.forEach(elem => {

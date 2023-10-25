@@ -13,7 +13,8 @@ const Mesero = () => {
     changeState()
     getListMesa()
       .then(res => {
-        setMesas(res)
+        // Order by id_Mesa
+        setMesas(res.sort((a: DtMesa, b: DtMesa) => parseInt(a.id_Mesa) - parseInt(b.id_Mesa)))
       })
       .catch(err => console.log(err))
       .finally(() => changeState())

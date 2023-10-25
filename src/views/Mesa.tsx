@@ -101,14 +101,12 @@ const Mesa = () => {
     try {
       changeState()
       const create = await crearPedido(newPedido)
-      console.log(create)
       if (create.isOk === false) throw new Error(create.message)
       enqueueSnackbar('Pedido creado', { variant: 'success' })
       // Update mesa
       if (!mesa) throw new Error('No se pudo actualizar la mesa')
       if (!precioTotal) throw new Error('No se pudo actualizar la mesa')
-      const updateMesa = await modificarMesa({ id: parseInt(mesa), precioTotal: parseInt(precioTotal) + totalPedido })
-      console.log(updateMesa)
+      await modificarMesa({ id: parseInt(mesa), precioTotal: parseInt(precioTotal) + totalPedido })
       changeState()
     }
     catch (err) {

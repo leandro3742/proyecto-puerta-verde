@@ -24,7 +24,6 @@ export const modificarMesa = async ({ id, precioTotal }: { id: number, precioTot
       })
     });
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (err) {
     throw err;
