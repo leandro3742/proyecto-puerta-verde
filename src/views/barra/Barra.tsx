@@ -30,17 +30,6 @@ const Barra = () => {
   }, [search, menu])
 
   const addProduct = (id: number) => {
-    pedido.find(elem => elem.id === id)
-      ?
-      setPedido(pedido.map(elem => {
-        return elem.id === id
-          ?
-          { ...elem, qty: elem.qty + 1 }
-          :
-          elem
-      }))
-      :
-      setPedido([...pedido, { id, qty: 1, obs: "", product: menu.find(elem => elem.id_Producto === id) }])
   }
   const deleteProduct = (elem: DtProduct) => {
     const aux = pedido.filter(e => JSON.stringify(e) != JSON.stringify(elem))

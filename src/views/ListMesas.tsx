@@ -6,7 +6,12 @@ import { useEffect, useState } from 'react'
 import { getListMesa } from '../api/mesa'
 import { DtMesa } from '../dataTypes/DtMesa'
 import spinnerStore from '../state/spinner'
-const Mesero = () => {
+
+interface props {
+  url: string
+}
+
+const ListMesas = (props: props) => {
   const [mesas, setMesas] = useState<DtMesa[]>([])
   const { changeState } = spinnerStore()
   useEffect(() => {
@@ -25,7 +30,7 @@ const Mesero = () => {
       <section className='d-flex flex-wrap justify-content-around'>
         {mesas.map(elem => {
           return (
-            <Link to={`/mesero/${elem.id_Mesa}/${elem.precioTotal}`} key={elem.id_Mesa}>
+            <Link to={`/${props.url}/${elem.id_Mesa}/${elem.precioTotal}`} key={elem.id_Mesa}>
               <article className={`mesas-background ${elem.enUso ? 'mesa-ocupada' : 'mesa-vacia'}`}>
                 <div>
                   <h5 className='text-center'>Mesa {elem.id_Mesa}</h5>
@@ -44,4 +49,4 @@ const Mesero = () => {
   )
 }
 
-export default Mesero
+export default ListMesas

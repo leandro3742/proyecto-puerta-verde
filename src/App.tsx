@@ -8,7 +8,6 @@ import { BACKEND_URL } from './assets/constant'
 import { cocinaStore } from './state/cocina'
 import Layout from './components/Layout'
 import Login from './views/Login'
-import Mesero from './views/Mesero'
 import Mesa from './views/Mesa'
 import Cliente from './views/admin/Cliente'
 import AdminHome from './views/admin/AdminHome'
@@ -17,7 +16,8 @@ import Cocina from './views/cocina/Cocina'
 import Barra from './views/barra/Barra'
 import Ingrediente from './views/admin/Ingrediente'
 import Producto from './views/admin/Producto'
-import Caja from './views/Caja'
+import Caja from './views/caja/Caja'
+import ListMesas from './views/ListMesas'
 
 function App() {
   const { addNotification } = cocinaStore()
@@ -61,7 +61,7 @@ function App() {
 
               <Route path='/' element={<ProtectedRoutes />}>
                 <Route index element={<div>Home</div>} />
-                <Route path='mesero' element={<Mesero />} />
+                <Route path='mesero' element={<ListMesas url={'mesero'} />} />
                 <Route path='mesero/:mesa/:precioTotal' element={<Mesa />} />
               </Route>
 
@@ -82,8 +82,10 @@ function App() {
               </Route>
 
               <Route path='/caja' element={<ProtectedRoutes />}>
-                <Route index element={<Caja />} />
+                <Route index element={<ListMesas url='caja' />} />
+                <Route path=':mesa/:precioTotal' element={<Caja />} />
               </Route>
+
             </Routes>
           </Layout>
         </ThemeConfig>

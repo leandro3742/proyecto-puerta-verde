@@ -1,0 +1,17 @@
+.caja-card {
+  background-color: var(--color-darkBlue);
+  border-radius: 5px;
+}
+
+.pago-parcial > input {
+  width: 75px;
+  margin-left: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-size: 1.25rem;
+  background-color: var(--color-input);
+  outline: none;
+  border-radius: 10px;
+  border: none;
+  text-align: center;
+}
