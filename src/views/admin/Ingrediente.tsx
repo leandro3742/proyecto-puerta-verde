@@ -115,7 +115,7 @@ const Ingrediente = () => {
                     obtenerIngredientes();
                     setNombre('');
                     setStock('');
-                    setCategoria('');
+                    //setCategoria('');
                 } else {
                     enqueueSnackbar(response.statusMessage, { variant: 'error' })
                 }

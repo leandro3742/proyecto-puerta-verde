@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import '../../styles/producto.css';
 import spinnerStore from '../../state/spinner';
-import { Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody} from '@mui/material';
+import { Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Checkbox, FormControl, MenuItem, Select} from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { agregarProducto, getListProductos, actualizarProducto, eliminarProducto, listarIngredientesProductos, agregarIngredienteProducto, modificarIngredienteProducto} from '../../api/productos';
+import { agregarProducto, getListProductos, actualizarProducto, eliminarProducto, listarIngredientesProductos, agregarIngredienteProducto, quitarProductos_Ingredientes} from '../../api/productos';
 import { DtIngrediente } from '../../dataTypes/DtIngrediente';
 import { DtProducto } from '../../dataTypes/DtProducto';
 import { listarIngredientes } from '../../api/ingrediente';
@@ -16,6 +16,7 @@ const Producto = () => {
 	const [productos, setProductos] = useState<DtProducto[]>([]);
     const [ingredientes, setIngredientes] = useState<DtIngrediente[]>([]);
     const [ingredientes2, setIngredientes2] = useState<DtIngrediente[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState(new Set<number>());
     const [id_Producto,setId]= useState('');
     const [nombre,setNombre]= useState('');
     const [descripcion,setDescripcion]= useState('');
@@ -98,11 +99,13 @@ const Producto = () => {
         setDescripcion('');
         setPrecio('0');
         setTipo('0');
+        setIngredientes2([]);
+        setSelectedOptions(new Set());
         setTitle('Registrar Producto');
         controlModal('modalProductos3', 'abrir');
     };
 
-    const crearProducto = async (nombre: string, descripcion: string, precio: string, tipo: string, ingredientes2: DtIngrediente[]) => {
+    const crearProducto = async (nombre: string, descripcion: string, precio: string, tipo: string) => {
         setId('0');
         if(nombre.trim() === ''){
             enqueueSnackbar('Escribe el nombre del Producto', { variant: 'warning' })
@@ -114,7 +117,7 @@ const Producto = () => {
         else if(tipo.trim() === ''){
             enqueueSnackbar('Seleccione el tipo de Producto', { variant: 'warning' })
         }
-        else if(ingredientes2.length === 0){
+        else if(selectedOptions.size === 0){
             enqueueSnackbar('Debe agregar los Ingredientes del Producto', { variant: 'warning' })
         }
         else{
@@ -129,10 +132,10 @@ const Producto = () => {
                 const response = await agregarProducto(aux);
                 const match = response.statusMessage.split('/');
                 const numero = parseInt(match[1]);
-                ingredientes2.forEach(async (elemento) => {
+                selectedOptions.forEach(async (elemento) => {
                     const aux2: DtProducto_Ingrediente = {
                         id_Producto: numero,
-                        id_Ingrediente: elemento.id_Ingrediente
+                        id_Ingrediente: elemento
                     };
                     await agregarIngredienteProducto(aux2);
                 });
@@ -142,16 +145,16 @@ const Producto = () => {
                     if (btnCerrar) {
                         btnCerrar.click();
                     }
-                    enqueueSnackbar(response.statusMessage, { variant: 'success' })
+                    enqueueSnackbar(match[0], { variant: 'success' })
                     obtenerProductos();
                     setNombre('');
                     setDescripcion('');
                     setPrecio('0');
-                    setTipo('');
-                    setIngredientes2([]);
+                    //setTipo('');
+                    setSelectedOptions(new Set());
                     obtenerIngredientes();
                 } else {
-                    enqueueSnackbar(response.statusMessage, { variant: 'error' })
+                    enqueueSnackbar(match[0], { variant: 'error' })
                 }
             } catch (error) {
                 enqueueSnackbar('Error inesperado', { variant: 'error' })
@@ -182,13 +185,31 @@ const Producto = () => {
     
             try {
                 const response = await actualizarProducto(aux);
-                ingredientes2.forEach(async (elemento) => {
+
+                const seAgregan = new Set<number>(
+                    [...selectedOptions].filter((option) => !ingredientes2.some((ingrediente) => ingrediente.id_Ingrediente === option))
+                );
+                
+                const seQuitan = new Set<number>(
+                ingredientes2
+                    .filter((ingrediente) => !selectedOptions.has(ingrediente.id_Ingrediente))
+                    .map((ingrediente) => ingrediente.id_Ingrediente)
+                );
+
+                seAgregan.forEach(async (elemento) => {
                     const aux2: DtProducto_Ingrediente = {
                         id_Producto: parseInt(id_Producto),
-                        id_Ingrediente: elemento.id_Ingrediente
+                        id_Ingrediente: elemento
                     };
-                    await modificarIngredienteProducto(aux2);
+                    await agregarIngredienteProducto(aux2);
                 });
+                seQuitan.forEach(async (elemento) => {
+                    const aux3: DtProducto_Ingrediente = {
+                        id_Producto: parseInt(id_Producto),
+                        id_Ingrediente: elemento
+                    };
+                    await quitarProductos_Ingredientes(aux3);
+                });            
                 if (response.statusOk === true) {
                     const btnCerrar = document.getElementById('btnCerrar');
                     if (btnCerrar) {
@@ -224,32 +245,40 @@ const Producto = () => {
         }
     }
 
-    const verProductos = (id_Producto: number, nombre: string, descripcion: string, precio: number, tipo: number) =>{
+    const verProductos = (id_Producto: number, nombre: string, descripcion: string, precio: number, tipo: number) => {
         setId(id_Producto.toString());
         setNombre(nombre);
         setDescripcion(descripcion);
         setPrecio(precio.toString());
         setTipo(tipo.toString());
-
+        setIngredientes2([]);
+        setSelectedOptions(new Set());
+    
         listarIngredientesProductos(id_Producto)
-        .then((res) => {
+          .then((res) => {
             setIngredientes2(res);
-        })
-
+            const newSelectedOptions = new Set<number>();
+            res.forEach((ing: DtIngrediente) => {
+              newSelectedOptions.add(ing.id_Ingrediente);
+            });
+            setSelectedOptions(newSelectedOptions);
+          })
+          .catch((error) => {
+            console.error("Error al obtener ingredientes: " + error);
+          });
+      
         setTitle('Información del Producto');
         controlModal('modalProductos2', 'abrir');
-    }
+    };      
 
-    const AddClick = (item: DtIngrediente) => {
-        const updatedIngredientes2 = [...ingredientes2, item];
-        setIngredientes2(updatedIngredientes2);
-        setIngredientes(ingredientes.filter(ingrediente => ingrediente.id_Ingrediente !== item.id_Ingrediente));
-    };
-    
-    const RemoveClick = (item: DtIngrediente) => {
-        const updatedIngredientes = [...ingredientes, item];
-        setIngredientes(updatedIngredientes);
-        setIngredientes2(ingredientes2.filter(ingrediente => ingrediente.id_Ingrediente !== item.id_Ingrediente));
+    const selectCheck = (id: number) => {
+        const updatedOptions = new Set(selectedOptions);
+        if (updatedOptions.has(id)) {
+          updatedOptions.delete(id);
+        } else {
+          updatedOptions.add(id);
+        }
+        setSelectedOptions(updatedOptions);
     };
 
 
@@ -343,53 +372,18 @@ const Producto = () => {
                                 })}    
                             </select>
                         </div>
-                        <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
-                        <br></br>
                         <div className='input-group mb-3'>
-                            <div className='table-container' style={{ width: '50%', overflow: 'auto', maxHeight: '250px' }}>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableBody>
-                                            {ingredientes.slice(0, 5).map((elem, index) => (
-                                                <TableRow key={index}>
-                                                    <TableCell>{elem.nombre}</TableCell>
-                                                    <TableCell>
-                                                        <Button
-                                                            size="small"
-                                                            color="primary"
-                                                            onClick={() => AddClick(elem)}
-                                                        >
-                                                            Agregar
-                                                        </Button>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </div>
-                            <div className='table-container' style={{ width: '50%', overflow: 'auto', maxHeight: '300px' }}>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableBody>
-                                            {ingredientes2.slice(0, 5).map((elem, index) => (
-                                                <TableRow key={index}>
-                                                    <TableCell>{elem.nombre}</TableCell>
-                                                    <TableCell>
-                                                        <Button
-                                                            size="small"
-                                                            color="secondary"
-                                                            onClick={() => RemoveClick(elem)}
-                                                        >
-                                                            Quitar
-                                                        </Button>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </div>
+                            <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
+                            <FormControl style={{ color: 'black' }}>
+                                <Select multiple value={Array.from(selectedOptions)} className='my-form-control'>
+                                {ingredientes.map((ingrediente) => (
+                                    <MenuItem key={ingrediente.id_Ingrediente} value={ingrediente.id_Ingrediente} onClick={() => selectCheck(ingrediente.id_Ingrediente)}>
+                                    <Checkbox checked={selectedOptions.has(ingrediente.id_Ingrediente)}/>
+                                    {ingrediente.nombre}
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </FormControl>
                         </div>
                         <div className='d-grid col-6 mx-auto'>
                             <Button onClick={() => modificarProducto(nombre, descripcion, precio, tipo, ingredientes2)} className='btn btn-success'>
@@ -441,19 +435,18 @@ const Producto = () => {
                                 })}
                             </select>
                         </div>
-                        <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
                         <div className='input-group mb-3'>
-                            <TableContainer component={Paper}>
-                                <Table>
-                                    <TableBody>
-                                        {ingredientes2.map((elem, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>{elem.nombre}</TableCell>
-                                        </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                            <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
+                            <FormControl style={{ color: 'black' }}>
+                                <Select multiple value={Array.from(selectedOptions)} disabled={true} className='my-form-control'>
+                                {ingredientes.map((ingrediente) => (
+                                    <MenuItem key={ingrediente.id_Ingrediente} value={ingrediente.id_Ingrediente} onClick={() => selectCheck(ingrediente.id_Ingrediente)}>
+                                    <Checkbox checked={selectedOptions.has(ingrediente.id_Ingrediente)}/>
+                                    {ingrediente.nombre}
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </FormControl>
                         </div>
                     </div>
                     <div className='modal-footer'>
@@ -509,56 +502,21 @@ const Producto = () => {
                                 })}
                             </select>
                         </div>
-                        <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
-                        <br></br>
                         <div className='input-group mb-3'>
-                            <div className='table-container' style={{ width: '50%', overflow: 'auto', maxHeight: '250px' }}>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableBody>
-                                            {ingredientes.slice().map((elem, index) => (
-                                                <TableRow key={index}>
-                                                    <TableCell>{elem.nombre}</TableCell>
-                                                    <TableCell>
-                                                        <Button
-                                                            size="small"
-                                                            color="primary"
-                                                            onClick={() => AddClick(elem)}
-                                                        >
-                                                            Agregar
-                                                        </Button>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </div>
-                            <div className='table-container' style={{ width: '50%', overflow: 'auto', maxHeight: '300px' }}>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableBody>
-                                            {ingredientes2.slice().map((elem, index) => (
-                                                <TableRow key={index}>
-                                                    <TableCell>{elem.nombre}</TableCell>
-                                                    <TableCell>
-                                                        <Button
-                                                            size="small"
-                                                            color="secondary"
-                                                            onClick={() => RemoveClick(elem)}
-                                                        >
-                                                            Quitar
-                                                        </Button>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </div>
+                            <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
+                            <FormControl style={{ color: 'black' }}>
+                                <Select multiple value={Array.from(selectedOptions)} className='my-form-control'>
+                                {ingredientes.map((ingrediente) => (
+                                    <MenuItem key={ingrediente.id_Ingrediente} value={ingrediente.id_Ingrediente} onClick={() => selectCheck(ingrediente.id_Ingrediente)}>
+                                    <Checkbox checked={selectedOptions.has(ingrediente.id_Ingrediente)}/>
+                                    {ingrediente.nombre}
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </FormControl>
                         </div>
                         <div className='d-grid col-6 mx-auto'>
-                            <Button onClick={() => crearProducto(nombre, descripcion, precio, tipo, ingredientes2)} className='btn btn-success'>
+                            <Button onClick={() => crearProducto(nombre, descripcion, precio, tipo)} className='btn btn-success'>
                                 <i className='fa-solid fa-floppy-disk'></i> Guardar
                             </Button>
                         </div>
@@ -576,3 +534,5 @@ const Producto = () => {
 }
 
 export default Producto
+
+

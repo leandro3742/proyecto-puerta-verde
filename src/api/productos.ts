@@ -68,7 +68,7 @@ export const eliminarProducto = async (idProducto: number) => {
 
 export const listarIngredientesProductos = async (idProducto: number) => {
   try {
-    const response = await fetch(BACKEND_URL + `api/listarIngredientesProducto/${idProducto}`);
+    const response = await fetch(BACKEND_URL + 'api/listarIngredientesProducto' + idProducto);
     const data = await response.json();
     return data;
   } catch (err) {
@@ -95,6 +95,7 @@ export const getListByTipo = async (tipo: string) => {
     throw err;
   }
 }
+
 export const ListarProductosTipo = async (idProducto: number) => {
   try {
     const response = await fetch(BACKEND_URL + `api/listarProductosPorTipo/${idProducto}`);
@@ -105,11 +106,11 @@ export const ListarProductosTipo = async (idProducto: number) => {
   }
 }
 
-export const modificarIngredienteProducto = async (Productos_Ingredientes: DtProducto_Ingrediente) => {
+export const quitarProductos_Ingredientes = async (Productos_Ingredientes: DtProducto_Ingrediente) => {
   try {
     console.log(Productos_Ingredientes);
-    const response = await fetch(BACKEND_URL + 'api/modificarProducto', {
-      method: 'PUT',
+    const response = await fetch(BACKEND_URL + 'api/quitarProductos_Ingredientes', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
