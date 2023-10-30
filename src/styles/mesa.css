@@ -90,3 +90,26 @@
     overflow-y: auto;
   }
 }
+
+.btn-success {
+  background-color: #4CAF50; 
+  color: #fff; 
+  border: none;
+  border-radius: 5px; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  cursor: pointer; 
+  height: 40px;
+  margin-right: 260px;
+}
+
+.btn-success:hover {
+  background-color: #45a049; 
+}
+
+@media screen and (max-width: 768px) {
+  .search-input {
+    width: 200px; 
+    margin-left: 20px;
+  }
+}

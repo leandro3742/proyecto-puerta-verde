@@ -18,9 +18,9 @@ export const agregarProducto = async (Producto: DtProducto) => {
   }
 }
 
-export const agregarIngredienteProducto = async (Ingredientes: DtProducto_Ingrediente[]) => {
+export const agregarIngredienteProducto = async (Ingredientes: DtProducto_Ingrediente) => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/agregarProducto', {
+    const response = await fetch(BACKEND_URL + 'api/agregarProductos_Ingredientes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -105,3 +105,19 @@ export const ListarProductosTipo = async (idProducto: number) => {
   }
 }
 
+export const modificarIngredienteProducto = async (Productos_Ingredientes: DtProducto_Ingrediente) => {
+  try {
+    console.log(Productos_Ingredientes);
+    const response = await fetch(BACKEND_URL + 'api/modificarProducto', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(Productos_Ingredientes)
+    })
+    const data = await response.json()
+    return data;
+  } catch (error) {
+    throw error
+  }
+}

@@ -1,4 +1,5 @@
 import { BACKEND_URL } from "../assets/constant";
+import { DtMesa } from "../dataTypes/DtMesa";
 
 export const getListMesa = async () => {
   try {
@@ -27,5 +28,37 @@ export const modificarMesa = async ({ id, precioTotal }: { id: number, precioTot
     return data;
   } catch (err) {
     throw err;
+  }
+}
+
+export const agregarMesa = async (Mesa: DtMesa) => {
+  console.log('POST'+Mesa.id_Mesa+Mesa.enUso+Mesa.precioTotal);
+  try {
+    const response = await fetch(BACKEND_URL + 'api/agregarMesa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(Mesa)
+    });
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export const bajaMesa = async (idMesa: number) => {
+  try {
+    const response = await fetch(BACKEND_URL + `api/bajaMesa/${idMesa}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
   }
 }

@@ -18,6 +18,8 @@ import Barra from './views/barra/Barra'
 import Ingrediente from './views/admin/Ingrediente'
 import Producto from './views/admin/Producto'
 import Caja from './views/Caja'
+import Mesas from './views/admin/Mesas'
+import Usuarios from './views/admin/Usuarios'
 
 function App() {
   const { addNotification } = cocinaStore()
@@ -79,6 +81,8 @@ function App() {
                 <Route path='clientes' element={<Cliente />} />
                 <Route path='ingredientes' element={<Ingrediente />} />
                 <Route path='productos' element={<Producto />} />
+                <Route path='mesas' element={<Mesas />} />
+
               </Route>
 
               <Route path='/caja' element={<ProtectedRoutes />}>

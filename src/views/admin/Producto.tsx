@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
 import '../../styles/producto.css';
 import spinnerStore from '../../state/spinner';
-import { Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Select} from '@mui/material';
+import { Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody} from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { agregarProducto, agregarIngredienteProducto, getListProductos, actualizarProducto, eliminarProducto } from '../../api/productos';
+import { agregarProducto, getListProductos, actualizarProducto, eliminarProducto, listarIngredientesProductos, agregarIngredienteProducto, modificarIngredienteProducto} from '../../api/productos';
 import { DtIngrediente } from '../../dataTypes/DtIngrediente';
 import { DtProducto } from '../../dataTypes/DtProducto';
 import { listarIngredientes } from '../../api/ingrediente';
 import { DtTipo } from '../../dataTypes/DtTipo';
+import { DtProducto_Ingrediente } from '../../dataTypes/DtProducto_Ingrediente';
 
 
-const Ingrediente = () => {
+const Producto = () => {
 	const { changeState } = spinnerStore();
 	const [productos, setProductos] = useState<DtProducto[]>([]);
     const [ingredientes, setIngredientes] = useState<DtIngrediente[]>([]);
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const [ingredientes2, setIngredientes2] = useState<DtIngrediente[]>([]);
     const [id_Producto,setId]= useState('');
     const [nombre,setNombre]= useState('');
     const [descripcion,setDescripcion]= useState('');
@@ -61,6 +62,13 @@ const Ingrediente = () => {
         });
     };
 
+    const obtenerIngredientes = () => {
+        listarIngredientes()
+        .then((res) => {
+            setIngredientes(res);
+        })
+    };
+
     const controlModal = (modal: string, accion: string) => {
         const elemento = document.getElementById(modal);
         if (elemento) { // Verificar si elemento no es null
@@ -94,7 +102,7 @@ const Ingrediente = () => {
         controlModal('modalProductos3', 'abrir');
     };
 
-    const crearProducto = async (nombre: string, descripcion: string, precio: string, tipo: string, selectedOptions: string[]) => {
+    const crearProducto = async (nombre: string, descripcion: string, precio: string, tipo: string, ingredientes2: DtIngrediente[]) => {
         setId('0');
         if(nombre.trim() === ''){
             enqueueSnackbar('Escribe el nombre del Producto', { variant: 'warning' })
@@ -106,6 +114,9 @@ const Ingrediente = () => {
         else if(tipo.trim() === ''){
             enqueueSnackbar('Seleccione el tipo de Producto', { variant: 'warning' })
         }
+        else if(ingredientes2.length === 0){
+            enqueueSnackbar('Debe agregar los Ingredientes del Producto', { variant: 'warning' })
+        }
         else{
             const aux: DtProducto = {
                 id_Producto: 0,
@@ -116,6 +127,16 @@ const Ingrediente = () => {
             };
             try {
                 const response = await agregarProducto(aux);
+                const match = response.statusMessage.split('/');
+                const numero = parseInt(match[1]);
+                ingredientes2.forEach(async (elemento) => {
+                    const aux2: DtProducto_Ingrediente = {
+                        id_Producto: numero,
+                        id_Ingrediente: elemento.id_Ingrediente
+                    };
+                    await agregarIngredienteProducto(aux2);
+                });
+                
                 if (response.statusOk === true) {
                     const btnCerrar = document.getElementById('btnCerrar');
                     if (btnCerrar) {
@@ -127,6 +148,8 @@ const Ingrediente = () => {
                     setDescripcion('');
                     setPrecio('0');
                     setTipo('');
+                    setIngredientes2([]);
+                    obtenerIngredientes();
                 } else {
                     enqueueSnackbar(response.statusMessage, { variant: 'error' })
                 }
@@ -137,7 +160,7 @@ const Ingrediente = () => {
         }
     }
 
-    const modificarProducto = async (nombre: string, descripcion: string, precio: string, tipo: string, selectedOptions: string[]) => {
+    const modificarProducto = async (nombre: string, descripcion: string, precio: string, tipo: string, ingredientes2: DtIngrediente[]) => {
         if(nombre.trim() === ''){
             enqueueSnackbar('Escribe el nombre del Producto', { variant: 'warning' })
         }else if(descripcion.trim() === ''){
@@ -159,6 +182,13 @@ const Ingrediente = () => {
     
             try {
                 const response = await actualizarProducto(aux);
+                ingredientes2.forEach(async (elemento) => {
+                    const aux2: DtProducto_Ingrediente = {
+                        id_Producto: parseInt(id_Producto),
+                        id_Ingrediente: elemento.id_Ingrediente
+                    };
+                    await modificarIngredienteProducto(aux2);
+                });
                 if (response.statusOk === true) {
                     const btnCerrar = document.getElementById('btnCerrar');
                     if (btnCerrar) {
@@ -200,15 +230,28 @@ const Ingrediente = () => {
         setDescripcion(descripcion);
         setPrecio(precio.toString());
         setTipo(tipo.toString());
+
+        listarIngredientesProductos(id_Producto)
+        .then((res) => {
+            setIngredientes2(res);
+        })
+
         setTitle('Información del Producto');
         controlModal('modalProductos2', 'abrir');
     }
 
-  
-    const selectedOptionChange = (selected: any) => {
-        selectedOptions.push(selected);
-        console.log("Lo que se selecciona es esto: "+selectedOptions);
+    const AddClick = (item: DtIngrediente) => {
+        const updatedIngredientes2 = [...ingredientes2, item];
+        setIngredientes2(updatedIngredientes2);
+        setIngredientes(ingredientes.filter(ingrediente => ingrediente.id_Ingrediente !== item.id_Ingrediente));
     };
+    
+    const RemoveClick = (item: DtIngrediente) => {
+        const updatedIngredientes = [...ingredientes, item];
+        setIngredientes(updatedIngredientes);
+        setIngredientes2(ingredientes2.filter(ingrediente => ingrediente.id_Ingrediente !== item.id_Ingrediente));
+    };
+
 
   return (
     <div className='App'>
@@ -300,32 +343,56 @@ const Ingrediente = () => {
                                 })}    
                             </select>
                         </div>
+                        <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
+                        <br></br>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
-                            <Select
-                                multiple
-                                id='ingredientes'
-                                className='form-control'
-                                value={selectedOptions}
-                                onChange={(e) => selectedOptionChange(e.target.value)}
-                                renderValue={(selected) => (
-                                    <div>
-                                    {selected.map((value) => (
-                                        <span key={value}>{value}, </span>
-                                    ))}
-                                    </div>
-                                )}
-
-                                >
-                                {ingredientes.map((ing) => (
-                                    <option key={ing.id_Ingrediente} value={ing.id_Ingrediente}>
-                                        {ing.nombre}
-                                    </option>
-                                ))}
-                            </Select>
+                            <div className='table-container' style={{ width: '50%', overflow: 'auto', maxHeight: '250px' }}>
+                                <TableContainer component={Paper}>
+                                    <Table>
+                                        <TableBody>
+                                            {ingredientes.slice(0, 5).map((elem, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell>{elem.nombre}</TableCell>
+                                                    <TableCell>
+                                                        <Button
+                                                            size="small"
+                                                            color="primary"
+                                                            onClick={() => AddClick(elem)}
+                                                        >
+                                                            Agregar
+                                                        </Button>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </div>
+                            <div className='table-container' style={{ width: '50%', overflow: 'auto', maxHeight: '300px' }}>
+                                <TableContainer component={Paper}>
+                                    <Table>
+                                        <TableBody>
+                                            {ingredientes2.slice(0, 5).map((elem, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell>{elem.nombre}</TableCell>
+                                                    <TableCell>
+                                                        <Button
+                                                            size="small"
+                                                            color="secondary"
+                                                            onClick={() => RemoveClick(elem)}
+                                                        >
+                                                            Quitar
+                                                        </Button>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </div>
                         </div>
                         <div className='d-grid col-6 mx-auto'>
-                            <Button onClick={() => modificarProducto(nombre, descripcion, precio, tipo, selectedOptions)} className='btn btn-success'>
+                            <Button onClick={() => modificarProducto(nombre, descripcion, precio, tipo, ingredientes2)} className='btn btn-success'>
                                 <i className='fa-solid fa-floppy-disk'></i> Guardar
                             </Button>
                         </div>
@@ -374,30 +441,19 @@ const Ingrediente = () => {
                                 })}
                             </select>
                         </div>
+                        <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
-                            <Select
-                                multiple
-                                id='ingredientes'
-                                className='form-control'
-                                value={selectedOptions}
-                                onChange={(e) => selectedOptionChange(e.target.value)}
-                                disabled
-                                renderValue={(selected) => (
-                                    <div>
-                                    {selected.map((value) => (
-                                        <span key={value}>{value}, </span>
-                                    ))}
-                                    </div>
-                                )}
-
-                                >
-                                {ingredientes.map((ing) => (
-                                    <option key={ing.id_Ingrediente} value={ing.id_Ingrediente}>
-                                        {ing.nombre}
-                                    </option>
-                                ))}
-                            </Select>
+                            <TableContainer component={Paper}>
+                                <Table>
+                                    <TableBody>
+                                        {ingredientes2.map((elem, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{elem.nombre}</TableCell>
+                                        </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </div>
                     </div>
                     <div className='modal-footer'>
@@ -453,32 +509,56 @@ const Ingrediente = () => {
                                 })}
                             </select>
                         </div>
+                        <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
+                        <br></br>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'>Ingredientes<i className='fa-solid fa-dollar-sign'></i></span>
-                            <select
-                                multiple
-                                id='ingredientes'
-                                className='form-control'
-                                value={selectedOptions}
-                                onChange={(e) => selectedOptionChange(e.target.value)}
-                                /*renderValue={(selected) => (
-                                    <div>
-                                    {selected.map((value) => (
-                                        <span key={value}>{value}, </span>
-                                    ))}
-                                    </div>
-                                )}*/
-
-                                >
-                                {ingredientes.map((ing) => (
-                                    <option key={ing.id_Ingrediente} value={ing.id_Ingrediente}>
-                                        {ing.nombre}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>       
+                            <div className='table-container' style={{ width: '50%', overflow: 'auto', maxHeight: '250px' }}>
+                                <TableContainer component={Paper}>
+                                    <Table>
+                                        <TableBody>
+                                            {ingredientes.slice().map((elem, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell>{elem.nombre}</TableCell>
+                                                    <TableCell>
+                                                        <Button
+                                                            size="small"
+                                                            color="primary"
+                                                            onClick={() => AddClick(elem)}
+                                                        >
+                                                            Agregar
+                                                        </Button>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </div>
+                            <div className='table-container' style={{ width: '50%', overflow: 'auto', maxHeight: '300px' }}>
+                                <TableContainer component={Paper}>
+                                    <Table>
+                                        <TableBody>
+                                            {ingredientes2.slice().map((elem, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell>{elem.nombre}</TableCell>
+                                                    <TableCell>
+                                                        <Button
+                                                            size="small"
+                                                            color="secondary"
+                                                            onClick={() => RemoveClick(elem)}
+                                                        >
+                                                            Quitar
+                                                        </Button>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </div>
+                        </div>
                         <div className='d-grid col-6 mx-auto'>
-                            <Button onClick={() => crearProducto(nombre, descripcion, precio, tipo, selectedOptions)} className='btn btn-success'>
+                            <Button onClick={() => crearProducto(nombre, descripcion, precio, tipo, ingredientes2)} className='btn btn-success'>
                                 <i className='fa-solid fa-floppy-disk'></i> Guardar
                             </Button>
                         </div>
@@ -495,4 +575,4 @@ const Ingrediente = () => {
   )
 }
 
-export default Ingrediente
+export default Producto
