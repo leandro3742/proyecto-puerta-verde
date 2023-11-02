@@ -10,6 +10,7 @@ import logo from '../assets/logo.png'
 import Spinner from "./Spinner";
 import spinnerStore from "../state/spinner";
 import { Button, Fade, Menu, MenuItem } from "@mui/material";
+import NavMesero from "./NavMesero";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { showSpinner } = spinnerStore()
@@ -30,8 +31,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
           <Link to='/login'>
             <img src={logo} id='logo' />
           </Link>
+          <>
+            <NavMesero />
+          </>
 
-          {window.screen.width > 768 &&
+
+          {/* {window.screen.width > 768 &&
             <section className="d-flex">
               <Link className="mx-3 text-white" to='/mesero'>
                 <h5 className=''>Mesero</h5>
@@ -49,8 +54,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 <h5 className=''>Admin</h5>
               </Link>
             </section>
-          }
-          {window.screen.width <= 768 &&
+          } */}
+          {/* {window.screen.width <= 768 &&
             <>
               <Button
                 aria-controls={open ? 'fade-menu' : undefined}
@@ -97,7 +102,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 <MenuItem onClick={handleClose}>Logout</MenuItem>
               </Menu>
             </>
-          }
+          } */}
         </nav>
         {children}
       </div>

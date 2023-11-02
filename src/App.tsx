@@ -18,33 +18,39 @@ import Ingrediente from './views/admin/Ingrediente'
 import Producto from './views/admin/Producto'
 import Caja from './views/caja/Caja'
 import ListMesas from './views/ListMesas'
+import Graphics from './components/graphics'
 
 function App() {
   const { addNotification } = cocinaStore()
 
-  useEffect(() => {
-    const hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(BACKEND_URL + "chatHub", { withCredentials: true })
-      .configureLogging(signalR.LogLevel.Information)
-      .build();
+  // useEffect(() => {
+  //   const hubConnection = new signalR.HubConnectionBuilder()
+  //     .withUrl(BACKEND_URL + "chatHub", { withCredentials: true })
+  //     .configureLogging(signalR.LogLevel.Information)
+  //     .build();
 
-    hubConnection.start()
-      .then(() => {
-        console.log("Conexión SignalR establecida");
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  //   hubConnection.start()
+  //     .then(() => {
+  //       console.log("Conexión SignalR establecida");
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
 
-    hubConnection.on("ReceiveMessage", (user, message) => {
-      console.log(user + " dice: " + message);
-    })
+  //   hubConnection.on("ReceiveMessage", (user, message) => {
+  //     console.log(user + " dice: " + message);
+  //   })
 
-    hubConnection.on("NewPedido", (message) => {
-      addNotification(message);
-      console.log(message);
-    })
-  }, []);
+  //   hubConnection.on("NewPedido", (message) => {
+  //     addNotification(message);
+  //     console.log(message);
+  //   })
+
+  //   hubConnection.on("PedidoCerrado", (message) => {
+  //     addNotification(message);
+  //     console.log(message);
+  //   })
+  // }, []);
 
   return (
     <BrowserRouter>
@@ -60,7 +66,9 @@ function App() {
               <Route path="/login" element={<Login />} />
 
               <Route path='/' element={<ProtectedRoutes />}>
-                <Route index element={<div>Home</div>} />
+                <Route index element={<div>
+                  <Graphics />
+                </div>} />
                 <Route path='mesero' element={<ListMesas url={'mesero'} />} />
                 <Route path='mesero/:mesa/:precioTotal' element={<Mesa />} />
               </Route>
