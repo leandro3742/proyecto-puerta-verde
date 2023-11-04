@@ -3,28 +3,43 @@ import '../styles/graphics.css'
 import { useState } from "react";
 import { getAllEstadisticas } from "../api/estadisticas";
 import spinnerStore from "../state/spinner";
+import BarType from "./graphics/Bar";
+import { DataItem } from "../dataTypes/DataItem";
 
 const Graphics = () => {
   const { changeState } = spinnerStore()
   const [inicio, setInicio] = useState<Date>(new Date());
   const [fin, setFin] = useState<Date>(new Date());
   const [tipoProducto, setTipoProducto] = useState<number>(1);
+  const [data, setData] = useState<Array<DataItem>>([])
 
   const search = async () => {
     let auxInicio = inicio
     auxInicio.setUTCDate(auxInicio.getUTCDate() + 1)
     auxInicio.setUTCHours(0, 0, 0, 0);
     const inicioFormat = auxInicio.toISOString()
-    console.log(inicioFormat)
 
     let auxFin = fin
     auxFin.setUTCDate(auxFin.getUTCDate() + 1)
     auxFin.setUTCHours(0, 0, 0, 0);
     const finFormat = auxFin.toISOString()
+
     changeState()
-    getAllEstadisticas({ fechaInicio: inicioFormat, fechaFin: finFormat, })
+    getAllEstadisticas({ fechaInicio: inicioFormat, fechaFin: finFormat, type: tipoProducto })
       .then((res) => {
-        console.log(res.data)
+        let a: Array<DataItem> = [];
+        let counter = 0;
+        res.forEach((elem) => {
+          if (elem.cantidad > 0) {
+            counter += 1;
+            a.push({
+              cant: elem.cantidad,
+              name: elem.producto.nombre,
+              key: counter,
+            })
+          }
+        })
+        setData(a)
       })
       .catch((err) => {
         console.log(err)
@@ -38,7 +53,7 @@ const Graphics = () => {
   }
 
   return (
-    <div>
+    <div className="d-flex">
       <article className="graphic-settings m-3 p-3">
         <h1 className="text-center">Ajustes</h1>
         <div>
@@ -73,7 +88,8 @@ const Graphics = () => {
           </footer>
         </div>
       </article>
-      <div>
+      <div className="m-3">
+        {data.length > 0 && <BarType data={data} />}
       </div>
     </div>
   );

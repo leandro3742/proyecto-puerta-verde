@@ -1,12 +1,22 @@
 import { BACKEND_URL } from "../assets/constant";
+import { DtEstadistica } from "../dataTypes/DtEstadistica";
 
 interface props {
   fechaInicio: string,
-  fechaFin: string
+  fechaFin: string,
+  type: number
 }
-export const getAllEstadisticas = async (props: props) => {
+export const getAllEstadisticas = async (props: props): Promise<Array<DtEstadistica>> => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/todoslosproductos', {
+    let url = '';
+    if (props.type === 1)
+      url = BACKEND_URL + 'api/todoslosproductos'
+    else if (props.type === 2)
+      url = BACKEND_URL + 'api/estadisticas/ventasPorProducto'
+    else if (props.type === 3)
+      url = BACKEND_URL + 'api/estadisticas/ventasPorCategoria'
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -24,9 +34,7 @@ export const getAllEstadisticas = async (props: props) => {
         }
       })
     })
-    console.log(response)
     const data = await response.json()
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error)
