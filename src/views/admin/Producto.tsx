@@ -344,24 +344,24 @@ const Producto = () => {
                         <input type='hidden' id='id'></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Nombre<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='nombre' className='form-control' value={nombre}
+                            <input type='text' id='nombre' className='form-control color-Style' value={nombre}
                             onChange={(e)=> setNombre(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Descripcion<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='descripcion' className='form-control' value={descripcion}
+                            <input type='text' id='descripcion' className='form-control color-Style' value={descripcion}
                             onChange={(e)=> setDescripcion(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Precio<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='precio' className='form-control' value={precio}
+                            <input type='text' id='precio' className='form-control color-Style' value={precio}
                             onChange={(e)=> setPrecio(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Tipo<i className='fa-solid fa-dollar-sign'></i></span>
                             <select
                                 id='tipo'
-                                className='form-control'
+                                className='form-control color-Style'
                                 value={tipo}
                                 onChange={(e) => setTipo(e.target.value)}
                                 >
@@ -409,21 +409,21 @@ const Producto = () => {
                         <input type='hidden' id='id' value={nombre}></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Nombre<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='nombre' className='form-control' value={nombre}></input>
+                            <input type='text' id='nombre' className='form-control color-Style' value={nombre}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Descripcion<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='descripcion' className='form-control' value={descripcion}></input>
+                            <input type='text' id='descripcion' className='form-control color-Style' value={descripcion}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Precio<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='precio' className='form-control' value={precio}></input>
+                            <input type='text' id='precio' className='form-control color-Style' value={precio}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Tipo<i className='fa-solid fa-dollar-sign'></i></span>
                             <select
                                 id='tipo'
-                                className='form-control'
+                                className='form-control color-Style'
                                 value={tipo}
                                 onChange={(e) => setTipo(e.target.value)}
                                 disabled
@@ -474,24 +474,24 @@ const Producto = () => {
                         <input type='hidden' id='id'></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Nombre<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='nombre' className='form-control' value={nombre}
+                            <input type='text' id='nombre' className='form-control color-Style' value={nombre}
                             onChange={(e)=> setNombre(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Descripcion<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='descripcion' className='form-control' value={descripcion}
+                            <input type='text' id='descripcion' className='form-control color-Style' value={descripcion}
                             onChange={(e)=> setDescripcion(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Precio<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='precio' className='form-control' value={precio}
+                            <input type='text' id='precio' className='form-control color-Style' value={precio}
                             onChange={(e)=> setPrecio(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Tipo<i className='fa-solid fa-dollar-sign'></i></span>
                             <select
                                 id='tipo'
-                                className='form-control'
+                                className='form-control color-Style'
                                 value={tipo}
                                 onChange={(e) => setTipo(e.target.value)}
                                 >

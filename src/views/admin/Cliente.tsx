@@ -269,27 +269,27 @@ const Cliente = () => {
                         <input type='hidden' id='id'></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Nombre<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='nombre' className='form-control' value={nombre}
+                            <input type='text' id='nombre' className='form-control color-Style' value={nombre}
                             onChange={(e)=> setNombre(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Apellido<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='apellido' className='form-control' value={apellido}
+                            <input type='text' id='apellido' className='form-control color-Style' value={apellido}
                             onChange={(e)=> setApellido(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Telefono<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='telefono' className='form-control' value={telefono}
+                            <input type='text' id='telefono' className='form-control color-Style' value={telefono}
                             onChange={(e)=> setTelefono(e.target.value)}></input>
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Saldo<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='saldo' className='form-control' value={saldo}
+                            <input type='text' id='saldo' className='form-control color-Style' value={saldo}
                             onChange={(e)=> setSaldo(e.target.value)}></input>
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Fichas<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='fichasCanje' className='form-control' value={fichasCanje}
+                            <input type='text' id='fichasCanje' className='form-control color-Style' value={fichasCanje}
                             onChange={(e)=> setFichas(e.target.value)}></input>
                         </div>
                         <div className='d-grid col-6 mx-auto'>
@@ -316,23 +316,23 @@ const Cliente = () => {
                         <input type='hidden' id='id' value={nombre}></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Nombre<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='nombre' className='form-control' value={nombre}></input>
+                            <input type='text' id='nombre' className='form-control color-Style' value={nombre}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Apellido<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='apellido' className='form-control' value={apellido}></input>
+                            <input type='text' id='apellido' className='form-control color-Style' value={apellido}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Telefono<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='telefono' className='form-control' value={telefono}></input>
+                            <input type='text' id='telefono' className='form-control color-Style' value={telefono}></input>
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Saldo<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='saldo' className='form-control' value={saldo}></input>
+                            <input type='text' id='saldo' className='form-control color-Style' value={saldo}></input>
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Fichas<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='fichasCanje' className='form-control' value={fichasCanje}></input>
+                            <input type='text' id='fichasCanje' className='form-control color-Style' value={fichasCanje}></input>
                         </div>
                     </div>
                     <div className='modal-footer'>
@@ -360,27 +360,27 @@ const Cliente = () => {
                         <input type='hidden' id='id'></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Nombre<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='nombre' className='form-control' value={nombre}
+                            <input type='text' id='nombre' className='form-control color-Style' value={nombre}
                             onChange={(e)=> setNombre(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Apellido<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='apellido' className='form-control' value={apellido}
+                            <input type='text' id='apellido' className='form-control color-Style' value={apellido}
                             onChange={(e)=> setApellido(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Telefono<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='telefono' className='form-control' value={telefono}
+                            <input type='text' id='telefono' className='form-control color-Style' value={telefono}
                             onChange={(e)=> setTelefono(e.target.value)}></input>
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Saldo<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='saldo' className='form-control' value={saldo}
+                            <input type='text' id='saldo' className='form-control color-Style' value={saldo}
                             onChange={(e)=> setSaldo(e.target.value)}></input>
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Fichas<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='fichasCanje' className='form-control' value={fichasCanje}
+                            <input type='text' id='fichasCanje' className='form-control color-Style' value={fichasCanje}
                             onChange={(e)=> setFichas(e.target.value)}></input>
                         </div>
                         <div className='d-grid col-6 mx-auto'>

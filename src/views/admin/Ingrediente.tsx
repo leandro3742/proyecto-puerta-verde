@@ -249,19 +249,19 @@ const Ingrediente = () => {
                         <input type='hidden' id='id'></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Nombre<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='nombre' className='form-control' value={nombre}
+                            <input type='text' id='nombre' className='form-control color-Style' value={nombre}
                             onChange={(e)=> setNombre(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Stock<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='stock' className='form-control' value={stock}
+                            <input type='text' id='stock' className='form-control color-Style' value={stock}
                             onChange={(e)=> setStock(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Categoria<i className='fa-solid fa-dollar-sign'></i></span>
                             <select
                                 id='categoria'
-                                className='form-control'
+                                className='form-control color-Style'
                                 value={id_Categoria}
                                 onChange={(e) => setCategoria(e.target.value)}
                                 >
@@ -296,17 +296,17 @@ const Ingrediente = () => {
                         <input type='hidden' id='id' value={nombre}></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Nombre<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='nombre' className='form-control' value={nombre}></input>
+                            <input type='text' id='nombre' className='form-control color-Style' value={nombre}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Stock<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='stock' className='form-control' value={stock}></input>
+                            <input type='text' id='stock' className='form-control color-Style' value={stock}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Categoria<i className='fa-solid fa-dollar-sign'></i></span>
                             <select
                                 id='categoria'
-                                className='form-control'
+                                className='form-control color-Style'
                                 value={id_Categoria}
                                 onChange={(e) => setCategoria(e.target.value)}
                                 disabled
@@ -344,19 +344,19 @@ const Ingrediente = () => {
                         <input type='hidden' id='id'></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Nombre<i className='fa-solid fa-gift'></i></span>
-                            <input type='text' id='nombre' className='form-control' value={nombre}
+                            <input type='text' id='nombre' className='form-control color-Style' value={nombre}
                             onChange={(e)=> setNombre(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Stock<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='stock' className='form-control' value={stock}
+                            <input type='text' id='stock' className='form-control color-Style' value={stock}
                             onChange={(e)=> setStock(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Categoria<i className='fa-solid fa-dollar-sign'></i></span>
                             <select
                                 id='categoria'
-                                className='form-control'
+                                className='form-control color-Style'
                                 value={id_Categoria}
                                 onChange={(e) => setCategoria(e.target.value)}
                                 >

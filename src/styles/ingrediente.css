@@ -1,3 +1,7 @@
+.color-Style{
+  background-color: var(--color-input);
+}
+
 /* Estilos personalizados para la barra de búsqueda */
 .search-input {
     width: 400px; /* Ancho máximo disponible en el contenedor */

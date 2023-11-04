@@ -2,6 +2,49 @@
   background-color: var(--color-input);
 }
 
+.itemRol {
+  position: relative; 
+  padding: 5px;
+}
+
+.iconoEliminar {
+  position: absolute;
+  top: 0; 
+  right: 0; 
+  cursor: pointer;
+}
+
+.circuloRojo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+}
+
+
+.divComboRol{
+  padding: 5px;
+  display: flex;
+}
+
+.listaRoles {
+  color: rgb(0, 0, 0);
+  background-color: var(--color-input);
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  display: flex;
+  justify-content: center; /* Centramos horizontalmente */
+  align-items: center; /* Centramos verticalmente */
+  width: 60px;
+  height: 30px;
+}
+
 /* Estilos personalizados para la barra de búsqueda */
 .search-input {
     width: 400px; /* Ancho máximo disponible en el contenedor */

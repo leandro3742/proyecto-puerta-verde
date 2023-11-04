@@ -36,7 +36,6 @@ export const agregarIngredienteProducto = async (Ingredientes: DtProducto_Ingred
 
 export const actualizarProducto = async (Producto: DtProducto) => {
   try {
-    console.log(Producto);
     const response = await fetch(BACKEND_URL + 'api/modificarProducto', {
       method: 'PUT',
       headers: {
@@ -108,7 +107,6 @@ export const ListarProductosTipo = async (idProducto: number) => {
 
 export const quitarProductos_Ingredientes = async (Productos_Ingredientes: DtProducto_Ingrediente) => {
   try {
-    console.log(Productos_Ingredientes);
     const response = await fetch(BACKEND_URL + 'api/quitarProductos_Ingredientes', {
       method: 'POST',
       headers: {
