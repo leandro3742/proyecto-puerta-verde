@@ -29,7 +29,8 @@ export const listarPedidosActivos = async () => {
 
 export const updatePedido = async (Pedido: DtPedido) => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/modificarPedido', {
+    console.log(Pedido)
+    const response = await fetch(BACKEND_URL + 'api/actualizarPedido', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

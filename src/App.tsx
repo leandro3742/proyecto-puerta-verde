@@ -20,6 +20,7 @@ import Caja from './views/caja/Caja'
 import ListMesas from './views/ListMesas'
 import Mesas from './views/admin/Mesas'
 import Usuarios from './views/admin/Usuarios'
+import Graphics from './components/Graphics'
 
 function App() {
   const { addNotification } = cocinaStore()
@@ -46,6 +47,11 @@ function App() {
       addNotification(message);
       console.log(message);
     })
+
+    hubConnection.on("ClosePedido", (message) => {
+      addNotification(message);
+      console.log(message);
+    })
   }, []);
 
   return (
@@ -62,7 +68,9 @@ function App() {
               <Route path="/login" element={<Login />} />
 
               <Route path='/' element={<ProtectedRoutes />}>
-                <Route index element={<div>Home</div>} />
+                <Route index element={<div>
+                  <Graphics />
+                </div>} />
                 <Route path='mesero' element={<ListMesas url={'mesero'} />} />
                 <Route path='mesero/:mesa/:precioTotal' element={<Mesa />} />
               </Route>

@@ -1,7 +1,7 @@
 import { Button } from "@mui/material"
 import '../../styles/cocina.css'
 import { useEffect, useState } from "react"
-import { finalizarPedido, listarPedidosPorTipo } from "../../api/pedido"
+import { listarPedidosPorTipo, updatePedido } from "../../api/pedido"
 import spinnerStore from "../../state/spinner"
 import { DtListaProductos, DtListaProductosBackend, DtPedido } from "../../dataTypes/DtPedido"
 import { cocinaStore } from "../../state/cocina"
@@ -44,12 +44,12 @@ const Cocina = () => {
     })
     return newList
   }
-  const completeOrder = (id: number) => {
+  const completeOrder = (pedido: DtPedido) => {
     changeState()
-    finalizarPedido(id)
+    updatePedido({ ...pedido, estadoProceso: false })
       .then((res) => {
         if (!res.statusOk) throw res.statusMessage
-        setPedidos(pedidos.filter(pedido => pedido.id_Pedido != id))
+        setPedidos(pedidos.filter(pedido => pedido.id_Pedido != pedido.id_Pedido))
       })
       .catch(err => enqueueSnackbar(err, { variant: 'error' }))
       .finally(() => changeState())
@@ -73,7 +73,7 @@ const Cocina = () => {
               )
             })}
             <div className="d-flex justify-content-end">
-              <Button onClick={() => completeOrder(pedido.id_Pedido)}>Orden pronta</Button>
+              <Button onClick={() => completeOrder(pedido)}>Orden pronta</Button>
             </div>
           </article>
         )

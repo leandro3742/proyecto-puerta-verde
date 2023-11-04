@@ -77,7 +77,7 @@ const Mesa = () => {
       if (!typesAux[elem.product.tipo]) typesAux[elem.product.tipo] = []
       typesAux[elem.product.tipo].push(elem)
     })
-
+    console.log(pedido)
     for (const key in typesAux) {
       const list = typesAux[key]
       const list_IdProductos: Array<{
@@ -85,14 +85,19 @@ const Mesa = () => {
         observaciones: string,
         nombreProducto: string
       }> = [];
+      console.log(list);
 
       for (let i = 0; i < list.length; i++) {
         const elem = list[i];
-        list_IdProductos.push({
-          id_Producto: elem.id,
-          observaciones: elem.obs,
-          nombreProducto: ''
-        })
+        console.log(elem)
+        // agregar la cantidad de veces que aparezca el producto
+        for (let j = 0; j < elem.qty; j++) {
+          list_IdProductos.push({
+            id_Producto: elem.id,
+            observaciones: elem.obs,
+            nombreProducto: ''
+          })
+        }
       }
       const totalPedido = list.reduce((acc: number, elem: DtProduct) => acc + (elem.product?.precio || 0) * elem.qty, 0)
       const newPedido: DtPedido = {
