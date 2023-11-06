@@ -20,6 +20,7 @@ export const modificarMesa = async ({ id, precioTotal }: { id: number, precioTot
       },
       body: JSON.stringify({
         id_Mesa: id,
+        nombre: '',
         enUso: true,
         precioTotal,
       })
@@ -52,7 +53,7 @@ export const cerrarCuentaMesa = async (id: number) => {
 }
 
 export const agregarMesa = async (Mesa: DtMesa) => {
-  console.log('POST'+Mesa.id_Mesa+Mesa.enUso+Mesa.precioTotal);
+  console.log('POST' + Mesa.id_Mesa + Mesa.enUso + Mesa.precioTotal);
   try {
     const response = await fetch(BACKEND_URL + 'api/agregarMesa', {
       method: 'POST',

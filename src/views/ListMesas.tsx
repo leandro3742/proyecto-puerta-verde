@@ -14,6 +14,7 @@ interface props {
 const ListMesas = (props: props) => {
   const [mesas, setMesas] = useState<DtMesa[]>([])
   const { changeState } = spinnerStore()
+
   useEffect(() => {
     changeState()
     getListMesa()

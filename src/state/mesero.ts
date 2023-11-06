@@ -2,13 +2,14 @@ import { create } from 'zustand'
 
 interface Notification {
   message: string
-  show: boolean
+  read: boolean
 }
 
 type Store = {
   notifications: Notification[]
   addNotification: (notification: Notification) => void
   removeNotification: (notification: Notification) => void
+  readNotification: () => void
 }
 
 export const meseroStore = create<Store>()((set) => ({
@@ -19,4 +20,8 @@ export const meseroStore = create<Store>()((set) => ({
     set((state) => ({
       notifications: state.notifications.filter((n) => n !== notification),
     })),
+  readNotification: () =>
+    set((state) => ({
+      notifications: state.notifications.map((n) => ({ ...n, read: true }))
+    }))
 }))

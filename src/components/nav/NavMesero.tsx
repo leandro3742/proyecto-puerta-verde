@@ -1,22 +1,25 @@
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { Badge, Button, Menu, MenuItem } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { meseroStore } from '../../state/mesero';
-
+// import DeleteIcon from '@mui/icons-material/Delete';
 const NavMesero = () => {
-  const { notifications } = meseroStore()
+  const { notifications, readNotification } = meseroStore()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [cant, setCant] = useState(3);
+  const [cant, setCant] = useState<number>(0);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-    setCant(0);
+    readNotification();
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    setCant(notifications.filter((notification) => !notification.read).length)
+  }, [notifications])
 
   return (
     <div>
@@ -37,9 +40,8 @@ const NavMesero = () => {
         {notifications.map((notification, index) => (
           <MenuItem key={index}>{notification.message}</MenuItem>
         ))}
-        {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem> */}
+
+        {/* {notifications.length > 0 && <Button color='error'><DeleteIcon /></Button>} */}
       </Menu>
     </div>
   )

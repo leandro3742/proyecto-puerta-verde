@@ -6,6 +6,7 @@ import spinnerStore from "../../state/spinner"
 import { DtListaProductos, DtListaProductosBackend, DtPedido } from "../../dataTypes/DtPedido"
 import { cocinaStore } from "../../state/cocina"
 import { enqueueSnackbar } from "notistack"
+import Timer from "../../components/Timer"
 
 const Cocina = () => {
   const { notifications } = cocinaStore()
@@ -16,7 +17,6 @@ const Cocina = () => {
     changeState()
     listarPedidosPorTipo(1)
       .then(res => {
-        console.log(res);
         setPedidos(res)
       })
       .catch(err => console.log(err))
@@ -25,7 +25,6 @@ const Cocina = () => {
   }, [])
 
   useEffect(() => {
-    console.log(notifications)
     if (!firstCall) return
     listarPedidosPorTipo(1)
       .then(res => setPedidos(res))
@@ -49,17 +48,23 @@ const Cocina = () => {
     updatePedido({ ...pedido, estadoProceso: false })
       .then((res) => {
         if (!res.statusOk) throw res.statusMessage
-        setPedidos(pedidos.filter(pedido => pedido.id_Pedido != pedido.id_Pedido))
+        console.log(pedidos.filter(pedidoAux => pedidoAux.id_Pedido != pedido.id_Pedido))
+        setPedidos(pedidos.filter(pedidoAux => pedidoAux.id_Pedido != pedido.id_Pedido))
       })
       .catch(err => enqueueSnackbar(err, { variant: 'error' }))
       .finally(() => changeState())
+  }
+
+  const changeBg = (id: number) => {
+    document.querySelector(`#pedido${id.toString()}`)?.classList.remove('article-cocina')
+    document.querySelector(`#pedido${id.toString()}`)?.classList.add('article-cocina-delay')
   }
 
   return (
     <div className="m-3 d-flex flex-wrap d-flex justify-content-around">
       {pedidos.map(pedido => {
         return (
-          <article key={pedido.id_Pedido} className="m-3 p-3 rounded shadow article-cocina">
+          <article id={"pedido" + pedido.id_Pedido.toString()} key={pedido.id_Pedido} className="m-3 p-3 rounded shadow article-cocina">
             {pedido.id_Mesa &&
               <h1>Orden para:  Mesa {pedido.id_Mesa}</h1>
             }
@@ -67,11 +72,12 @@ const Cocina = () => {
               return (
                 <section key={index} className="rounded p-3 article-1">
                   <h4>{producto.nombreProducto}</h4>
-                  <h5 className="ms-3 text-secondary">Cant: {producto.cant}</h5>
+                  <h5 className="ms-3">Cant: {producto.cant}</h5>
                   {producto.observaciones && <h5 className="ms-3 text-secondary">Obs: {producto.observaciones}</h5>}
                 </section>
               )
             })}
+            <Timer startDate={pedido.fecha_ingreso} pedidoId={pedido.id_Pedido} changeBg={changeBg} />
             <div className="d-flex justify-content-end">
               <Button onClick={() => completeOrder(pedido)}>Orden pronta</Button>
             </div>

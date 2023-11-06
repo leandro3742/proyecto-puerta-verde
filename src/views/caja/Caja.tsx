@@ -6,15 +6,13 @@ import '../../styles/caja.css'
 import { cerrarCuentaMesa, modificarMesa } from "../../api/mesa"
 import spinnerStore from "../../state/spinner"
 import { enqueueSnackbar } from "notistack"
+// import { getCajaActica } from "../../api/caja"
+
 const Caja = () => {
   const { mesa, precioTotal } = useParams()
   const [parcial, setParcial] = useState<string>('0')
   const { changeState } = spinnerStore()
   const navigate = useNavigate()
-  useEffect(() => {
-    console.log(mesa)
-    console.log(precioTotal)
-  }, [])
 
   const agregarPagoParcial = () => {
     const totalAux: number = parseInt(precioTotal ? precioTotal : '0')

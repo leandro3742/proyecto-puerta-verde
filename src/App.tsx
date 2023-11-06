@@ -21,10 +21,11 @@ import ListMesas from './views/ListMesas'
 import Mesas from './views/admin/Mesas'
 import Usuarios from './views/admin/Usuarios'
 import Graphics from './components/Graphics'
+import { meseroStore } from './state/mesero'
 
 function App() {
   const { addNotification } = cocinaStore()
-
+  const { addNotification: addNotificationMesero } = meseroStore()
   useEffect(() => {
     const hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(BACKEND_URL + "chatHub", { withCredentials: true })
@@ -39,18 +40,12 @@ function App() {
         console.error(error);
       });
 
-    hubConnection.on("ReceiveMessage", (user, message) => {
-      console.log(user + " dice: " + message);
-    })
-
     hubConnection.on("NewPedido", (message) => {
       addNotification(message);
-      console.log(message);
     })
 
     hubConnection.on("ClosePedido", (message) => {
-      addNotification(message);
-      console.log(message);
+      addNotificationMesero({ message, read: false })
     })
   }, []);
 

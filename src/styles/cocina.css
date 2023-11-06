@@ -2,6 +2,16 @@
   background-color: var(--color-darkBlue);
 }
 
+.article-cocina-delay {
+  background-color: #ee4545;
+}
+  .article-cocina-delay h1, .article-cocina-delay h4, .article-cocina-delay h5 {
+    color: var(--color-darkBlue);
+}
+.article-cocina-delay button{
+  background-color: var(--color-darkBlue);
+  color: #ee4545;
+}
 .article-2:nth-child(even) {
   background-color: var(--color-background);
 }
