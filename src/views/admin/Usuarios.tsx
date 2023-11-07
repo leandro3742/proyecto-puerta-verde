@@ -301,6 +301,7 @@ const Usuario = () => {
                                         <TableRow>
                                             <TableCell>Nombre</TableCell>
                                             <TableCell>Email</TableCell>
+                                            <TableCell>Accion</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>

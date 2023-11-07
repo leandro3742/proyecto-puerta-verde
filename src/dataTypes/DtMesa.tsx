@@ -1,5 +1,6 @@
 export interface DtMesa {
-  id_Mesa: string
-  enUso: boolean
+  id_Mesa: string,
+  nombre: string,
+  enUso: boolean,
   precioTotal: number
 }

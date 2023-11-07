@@ -230,7 +230,7 @@ const Cliente = () => {
 								  <TableCell>Nombre</TableCell>
 								  <TableCell>Saldo</TableCell>
 								  <TableCell>Fichas</TableCell>
-								  <TableCell>Acciones</TableCell>
+								  <TableCell>Accion</TableCell>
 								</TableRow>
 							  </TableHead>
 							  <TableBody>
@@ -284,12 +284,12 @@ const Cliente = () => {
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Saldo<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='saldo' className='form-control color-Style' value={saldo}
+                            <input type='number' id='saldo' className='form-control color-Style' value={saldo}
                             onChange={(e)=> setSaldo(e.target.value)}></input>
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Fichas<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='fichasCanje' className='form-control color-Style' value={fichasCanje}
+                            <input type='number' min='0' id='fichasCanje' className='form-control color-Style' value={fichasCanje}
                             onChange={(e)=> setFichas(e.target.value)}></input>
                         </div>
                         <div className='d-grid col-6 mx-auto'>
@@ -375,12 +375,12 @@ const Cliente = () => {
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Saldo<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='saldo' className='form-control color-Style' value={saldo}
+                            <input type='number' id='saldo' className='form-control color-Style' value={saldo}
                             onChange={(e)=> setSaldo(e.target.value)}></input>
                         </div>
 						<div className='input-group mb-3'>
                             <span className='input-group-text'>Fichas<i className='fa-solid fa-dollar-sign'></i></span>
-                            <input type='text' id='fichasCanje' className='form-control color-Style' value={fichasCanje}
+                            <input type='number' min='0' id='fichasCanje' className='form-control color-Style' value={fichasCanje}
                             onChange={(e)=> setFichas(e.target.value)}></input>
                         </div>
                         <div className='d-grid col-6 mx-auto'>
