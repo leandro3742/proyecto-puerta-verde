@@ -22,6 +22,7 @@ import Mesas from './views/admin/Mesas'
 import Usuarios from './views/admin/Usuarios'
 import Graphics from './components/Graphics'
 import { meseroStore } from './state/mesero'
+import CerrarCaja from './views/caja/CerrarCaja'
 
 function App() {
   const { addNotification } = cocinaStore()
@@ -89,8 +90,8 @@ function App() {
               </Route>
 
               <Route path='/caja' element={<ProtectedRoutes />}>
-                <Route index element={<ListMesas url='caja' />} />
-                <Route path=':mesa/:precioTotal' element={<Caja />} />
+                <Route index element={<Caja />} />
+                <Route path=':mesa/:precioTotal' element={<CerrarCaja />} />
               </Route>
 
             </Routes>

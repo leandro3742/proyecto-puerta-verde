@@ -1,6 +1,6 @@
 import { BACKEND_URL } from "../assets/constant";
 
-export const getCajaActica = async () => {
+export const getCajaActiva = async () => {
   try {
     const response = await fetch(BACKEND_URL + 'api/listarCajaavtiva');
     const data = await response.json();
