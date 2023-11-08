@@ -7,15 +7,19 @@ interface props {
   pedido: Array<DtProduct>
   deleteProduct: (product: DtProduct) => void
   postPedido: () => void
+  children?: React.ReactNode
 }
 const DialogCart = (props: props) => {
-  const { open, setOpen, pedido, deleteProduct, postPedido } = props;
+  const {
+    open, setOpen, pedido, deleteProduct, postPedido, children
+  } = props;
   return (
     <dialog open={open} className="dialog-cart">
       <header>
         <h5>Pedido</h5>
         <hr />
       </header>
+      {children}
       <section className="d-flex flex-column">
         {pedido.map(elem => {
           return (

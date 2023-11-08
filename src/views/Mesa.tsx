@@ -153,6 +153,7 @@ const Mesa = () => {
           <Button startIcon={<AddShoppingCartIcon />} size="medium" onClick={confirmProduct}>Agregar</Button>
         </section>
       </dialog>
+
       <DialogCart
         open={openPedido}
         setOpen={setOpenPedido}
