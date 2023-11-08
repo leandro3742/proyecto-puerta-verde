@@ -13,6 +13,7 @@ const theme = createTheme({
     secondary: {
       main: colors.darkBlue
     },
+
   },
   components: {
     MuiButton: {

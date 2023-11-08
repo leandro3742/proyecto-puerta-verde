@@ -33,7 +33,7 @@ export const actualizarIngrediente = async (Ingrediente: DtIngrediente) => {
   }
 }
 
-/*export const eliminarIngrediente = async (idIngrediente: number) => {
+export const eliminarIngrediente = async (idIngrediente: number) => {
   try {
     const response = await fetch(BACKEND_URL + `api/bajaIngrediente/${idIngrediente}`, {
       method: 'DELETE',
@@ -46,7 +46,7 @@ export const actualizarIngrediente = async (Ingrediente: DtIngrediente) => {
   } catch (error) {
     throw error;
   }
-}*/
+}
 
 export const listarIngredientes = async () => {
   try {

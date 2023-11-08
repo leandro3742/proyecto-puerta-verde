@@ -1,20 +1,20 @@
 import { Button } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import '../styles/mesa.css'
+import '../../styles/menu.css'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { DtProduct } from "../dataTypes/DtProduct";
-import { getListProductos } from "../api/productos";
-import { DtProducto } from "../dataTypes/DtProducto";
-import spinnerStore from "../state/spinner";
-import { DtPedido } from "../dataTypes/DtPedido";
-import { crearPedido } from "../api/pedido";
+import { DtProduct } from "../../dataTypes/DtProduct";
+import { getListProductos } from "../../api/productos";
+import { DtProducto } from "../../dataTypes/DtProducto";
+import spinnerStore from "../../state/spinner";
+import { DtPedido } from "../../dataTypes/DtPedido";
+import { crearPedido } from "../../api/pedido";
 import { enqueueSnackbar } from "notistack";
-import { modificarMesa } from "../api/mesa";
-import DialogCart from "../components/DialogCart";
-import ProductCard from "../components/ProductCard";
+import { modificarMesa } from "../../api/mesa";
+import DialogCart from "../../components/DialogCart";
+import ProductCard from "../../components/ProductCard";
 
-const Mesa = () => {
+const Menu = () => {
   const { mesa, precioTotal } = useParams()
   const { changeState } = spinnerStore()
   const [menu, setMenu] = useState<DtProducto[]>([])
@@ -165,4 +165,4 @@ const Mesa = () => {
   )
 }
 
-export default Mesa
+export default Menu

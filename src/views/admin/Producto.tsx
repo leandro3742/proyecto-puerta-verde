@@ -309,6 +309,7 @@ const Producto = () => {
 								<TableRow>
 								  <TableCell>Nombre</TableCell>
 								  <TableCell>Precio</TableCell>
+                                  <TableCell>Accion</TableCell>
 								</TableRow>
 							  </TableHead>
 							  <TableBody>
@@ -354,7 +355,7 @@ const Producto = () => {
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Precio<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='precio' className='form-control color-Style' value={precio}
+                            <input type='number' min='0' id='precio' className='form-control color-Style' value={precio}
                             onChange={(e)=> setPrecio(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
@@ -484,7 +485,7 @@ const Producto = () => {
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'>Precio<i className='fa-solid fa-comment'></i></span>
-                            <input type='text' id='precio' className='form-control color-Style' value={precio}
+                            <input type='number' min='0' id='precio' className='form-control color-Style' value={precio}
                             onChange={(e)=> setPrecio(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>

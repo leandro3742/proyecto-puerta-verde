@@ -93,6 +93,48 @@
   background-color: #45a049; 
 }
 
+/* Estilos personalizados para la barra de búsqueda */
+.search-input {
+  width: 400px; /* Ancho máximo disponible en el contenedor */
+  height: 40px; /* Ajusta la altura según tus preferencias */
+  border: 1px solid #006400; /* Borde verde oscuro */
+  border-radius: 5px; /* Bordes redondeados */
+  background-color: var(--color-input); /* Color de fondo verde claro */
+  padding: 5px 10px; /* Espaciado interno */
+  color: #333; /* Color del texto */
+  font-size: 16px; /* Tamaño de fuente */
+  outline: none; /* Quita el resaltado de enfoque al hacer clic */
+  margin-left: 270px;
+}
+
+/* Estilo personalizado para el botón de añadir */
+.btn-success {
+  background-color: #4CAF50; /* Color de fondo verde oscuro */
+  color: #fff; /* Color del texto */
+  border: none; /* Quita el borde */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 10px 20px; /* Espaciado interno */
+  font-size: 16px; /* Tamaño de fuente */
+  cursor: pointer; /* Cambia el cursor al hacer hover */
+  height: 40px;
+  margin-right: 260px;
+}
+
+/* Estilo para el botón al hacer hover */
+.btn-success:hover {
+  background-color: #45a049; /* Cambia el color al hacer hover */
+}
+
+.img-fichas{
+  width: 25px;
+  height: 40px;
+}
+
+.my-form-control {
+  width: 350px;
+  height: 40px;
+}
+
 @media screen and (max-width: 768px) {
   .search-input {
     width: 200px; 

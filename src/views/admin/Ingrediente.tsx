@@ -5,7 +5,7 @@ import { Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, T
 import { useSnackbar } from 'notistack';
 import { DtIngrediente } from '../../dataTypes/DtIngrediente';
 import { DtCategoria } from '../../dataTypes/DtCategoria';
-import { actualizarIngrediente, agregarIngrediente, listarIngredientes } from '../../api/ingrediente';
+import { actualizarIngrediente, agregarIngrediente, listarIngredientes, eliminarIngrediente } from '../../api/ingrediente';
 import { listarCategorias } from '../../api/categoria';
 
 
@@ -159,7 +159,7 @@ const Ingrediente = () => {
         }
     }
 
-    /*const deleteIngrediente= async () =>{
+    const deleteIngrediente = async () => {
         try {
             const response = await eliminarIngrediente(parseInt(id_Ingrediente));
             if (response.statusOk === true) {
@@ -174,9 +174,9 @@ const Ingrediente = () => {
                 enqueueSnackbar(response.statsMessage, { variant: 'error' })
             }
         } catch (error) {
-            enqueueSnackbar('Error inesperado', { variant: 'error' })
+            enqueueSnackbar('El ingrediente no se puede eliminar porque se usa en Productos activos', { variant: 'error' })
         }
-    }*/
+    }
 
     const verIngrediente = (id_Ingrediente: number, nombre: string, stock: number, id_Categoria: number) => {
         setId(id_Ingrediente.toString());
@@ -214,6 +214,7 @@ const Ingrediente = () => {
                                         <TableRow>
                                             <TableCell>Nombre</TableCell>
                                             <TableCell>Stock</TableCell>
+                                            <TableCell>Accion</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -254,7 +255,7 @@ const Ingrediente = () => {
                             </div>
                             <div className='input-group mb-3'>
                                 <span className='input-group-text'>Stock<i className='fa-solid fa-comment'></i></span>
-                                <input type='text' id='stock' className='form-control color-Style' value={stock}
+                                <input type='number' min='0' max='500' id='stock' className='form-control color-Style' value={stock}
                                     onChange={(e) => setStock(e.target.value)}></input>
                             </div>
                             <div className='input-group mb-3'>
@@ -323,10 +324,9 @@ const Ingrediente = () => {
                             <Button size="small" style={{ marginRight: '5px' }} color="primary" onClick={() => openModal()}>
                                 Modificar
                             </Button>
-                            &nbsp;
-                            {/*<Button size="small" style={{ marginRight: '5px' }} color="primary" onClick={()=>deleteIngrediente()}>
-                            Eliminar
-                        </Button>*/}
+                            <Button size="small" style={{ marginRight: '5px' }} color="primary" onClick={() => deleteIngrediente()}>
+                                Eliminar
+                            </Button>
                             <Button size="small" style={{ marginRight: '5px' }} color="primary" onClick={() => controlModal('modalIngredientes2', 'cerrar')} type='button' id='btnCerrar'>
                                 Cerrar
                             </Button>
@@ -349,7 +349,7 @@ const Ingrediente = () => {
                             </div>
                             <div className='input-group mb-3'>
                                 <span className='input-group-text'>Stock<i className='fa-solid fa-comment'></i></span>
-                                <input type='text' id='stock' className='form-control color-Style' value={stock}
+                                <input type='number' min='0' max='500' id='stock' className='form-control color-Style' value={stock}
                                     onChange={(e) => setStock(e.target.value)}></input>
                             </div>
                             <div className='input-group mb-3'>
