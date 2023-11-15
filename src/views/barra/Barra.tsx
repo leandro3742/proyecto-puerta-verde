@@ -9,15 +9,11 @@ import '../../styles/barra.css'
 import { DtProduct } from "../../dataTypes/DtProduct"
 import DialogCart from "../../components/DialogCart"
 import ProductCard from "../../components/ProductCard"
-import { getListMesa, modificarMesa } from "../../api/mesa"
+import { agregarPrecioMesa, getListMesa } from "../../api/mesa"
 import { DtMesa } from "../../dataTypes/DtMesa"
 import { DtPedido } from "../../dataTypes/DtPedido"
 import { crearPedido } from "../../api/pedido"
 import { enqueueSnackbar } from "notistack"
-// import { DtPedido } from "../../dataTypes/DtPedido"
-// import { crearPedido } from "../../api/pedido"
-// import { enqueueSnackbar } from "notistack"
-// import { modificarMesa } from "../../api/mesa"
 
 const Barra = () => {
   const { changeState } = spinnerStore()
@@ -41,10 +37,6 @@ const Barra = () => {
       })
       .catch(err => console.log(err))
       .finally(() => changeState())
-    // getListByTipo('2')
-    //   .then(res => setMenu(res))
-    //   .catch(err => console.log(err))
-    //   .finally(() => changeState())
   }, [])
 
   useEffect(() => {
@@ -139,7 +131,7 @@ const Barra = () => {
         enqueueSnackbar('Pedido creado', { variant: 'success' })
         // Update mesa
         if (!mesa) throw new Error('No se pudo actualizar la mesa')
-        await modificarMesa({ id: parseInt(mesa.id_Mesa), precioTotal: mesa.precioTotal + totalPedido })
+        await agregarPrecioMesa(parseInt(mesa.id_Mesa), totalPedido)
         changeState()
       }
       catch (err) {
