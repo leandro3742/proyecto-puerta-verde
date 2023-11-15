@@ -2,7 +2,7 @@ import { Button } from "@mui/material"
 import { useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 // Styles
-import '../../styles/caja.css'
+import '../../styles/cerrarCaja.css'
 import { cerrarCuentaMesa, modificarMesa } from "../../api/mesa"
 import spinnerStore from "../../state/spinner"
 import { enqueueSnackbar } from "notistack"

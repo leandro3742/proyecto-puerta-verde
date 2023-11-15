@@ -34,7 +34,7 @@ const ListMesas = (props: props) => {
             <Link to={`/${props.url}/${elem.id_Mesa}/${elem.precioTotal}`} key={elem.id_Mesa}>
               <article className={`mesas-background ${elem.enUso ? 'mesa-ocupada' : 'mesa-vacia'}`}>
                 <div>
-                  <h5 className='text-center'>Mesa {elem.id_Mesa}</h5>
+                  <h5 className='text-center'>Mesa {elem.nombre}</h5>
                 </div>
                 {elem.enUso &&
                   <div className='mesas-total'>

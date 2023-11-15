@@ -10,9 +10,10 @@ import spinnerStore from "../../state/spinner";
 import { DtPedido } from "../../dataTypes/DtPedido";
 import { crearPedido } from "../../api/pedido";
 import { enqueueSnackbar } from "notistack";
-import { modificarMesa } from "../../api/mesa";
+import { agregarPrecioMesa } from "../../api/mesa";
 import DialogCart from "../../components/DialogCart";
 import ProductCard from "../../components/ProductCard";
+import { sumarPrecioCaja } from "../../api/caja";
 
 const Menu = () => {
   const { mesa, precioTotal } = useParams()
@@ -121,7 +122,8 @@ const Menu = () => {
         // Update mesa
         if (!mesa) throw new Error('No se pudo actualizar la mesa')
         if (!precioTotal) throw new Error('No se pudo actualizar la mesa')
-        await modificarMesa({ id: parseInt(mesa), precioTotal: parseInt(precioTotal) + totalPedido })
+        await agregarPrecioMesa(parseInt(mesa), totalPedido)
+        await sumarPrecioCaja(parseInt(precioTotal))
         changeState()
       }
       catch (err) {

@@ -83,3 +83,22 @@ export const bajaMesa = async (idMesa: number) => {
     throw error;
   }
 }
+
+export const agregarPrecioMesa = async (idMesa: number, precio: number) => {
+  try {
+    const response = await fetch(BACKEND_URL + `api/modificarPrecio`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id_Mesa: idMesa,
+        precioTotal: precio,
+      })
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

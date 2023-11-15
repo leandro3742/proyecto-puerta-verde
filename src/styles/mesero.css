@@ -42,6 +42,20 @@
   margin-bottom: 10px;
 }
 
+.dialog-mesero {
+  border: none;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  position: fixed;
+  top: calc(50% - 200px);
+  width: 400px;
+  /* height: 550px; */
+  background-color: var(--color-darkBlue);
+  color: white;
+  outline: none;
+  overflow: auto;
+}
+
 @media screen and (max-width: 768px) {
   .mesas-background {
     width: 150px;
@@ -50,5 +64,19 @@
   .mesas-total {
     width: 100px;
     height: 29px;
+  }
+  .dialog-mesero {
+    top: calc(50% - 180px);
+    width: 300px;
+  }
+  .dialog-mesero input {
+    width: 90%;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--color-input);
+    border: none;
+    outline: none;
+    padding-left: 10px;
+    margin-bottom: 10px;
   }
 }

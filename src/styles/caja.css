@@ -3,7 +3,21 @@
   padding: 20px;
   text-align: center;
   font-size: 0.8em;
-  position: absolute;
+  /* position: absolute; */
   bottom: 0;
   width: 100%;
+}
+
+.dialog-caja{
+  position: absolute;
+  top: 50%;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--color-darkBlue);
+}
+
+#bodyCaja {
+  position: absolute;
+  top: 50%;
 }

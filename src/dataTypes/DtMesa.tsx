@@ -3,5 +3,4 @@ export interface DtMesa {
   nombre: string,
   enUso: boolean,
   precioTotal: number
-  nombre: string
 }
