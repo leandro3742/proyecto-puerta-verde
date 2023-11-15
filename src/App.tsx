@@ -65,7 +65,6 @@ function App() {
 
               <Route path='/' element={<ProtectedRoutes />}>
                 <Route index element={<div>
-                  <Graphics />
                 </div>} />
                 <Route path='mesero' element={<Mesero />} />
                 <Route path='mesero/:mesa/:precioTotal' element={<Menu />} />
@@ -87,6 +86,7 @@ function App() {
                 <Route path='productos' element={<Producto />} />
                 <Route path='mesas' element={<Mesas />} />
                 <Route path='usuarios' element={<Usuarios />} />
+                <Route path='estadisticas' element={<Graphics />} />
               </Route>
 
               <Route path='/caja' element={<ProtectedRoutes />}>

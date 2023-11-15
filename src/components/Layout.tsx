@@ -13,7 +13,7 @@ import NavMesero from "./nav/NavMesero";
 import NavAdmin from "./nav/NavAdmin";
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  let type = 'mesero'
+  let type = 'admin'
   const { showSpinner } = spinnerStore()
   return (
     <main>

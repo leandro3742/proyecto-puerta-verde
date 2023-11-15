@@ -2,7 +2,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { Badge, Button, Menu, MenuItem } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { meseroStore } from '../../state/mesero';
-// import DeleteIcon from '@mui/icons-material/Delete';
+
 const NavMesero = () => {
   const { notifications, readNotification } = meseroStore()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -40,8 +40,6 @@ const NavMesero = () => {
         {notifications.map((notification, index) => (
           <MenuItem key={index}>{notification.message}</MenuItem>
         ))}
-
-        {/* {notifications.length > 0 && <Button color='error'><DeleteIcon /></Button>} */}
       </Menu>
     </div>
   )

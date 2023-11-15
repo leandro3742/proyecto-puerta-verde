@@ -102,3 +102,13 @@ export const agregarPrecioMesa = async (idMesa: number, precio: number) => {
     throw error;
   }
 }
+
+export const agregarPagoParcial = async (idMesa: number, pago: number) => {
+  try {
+    const response = await fetch(BACKEND_URL + `api/agregarPagoParcial/${idMesa}/${pago}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

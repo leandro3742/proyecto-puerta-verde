@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 // Styles
 import '../../styles/cerrarCaja.css'
-import { cerrarCuentaMesa, modificarMesa } from "../../api/mesa"
+import { agregarPagoParcial as fetchAgregarPagoPArcial, cerrarCuentaMesa } from "../../api/mesa"
 import spinnerStore from "../../state/spinner"
 import { enqueueSnackbar } from "notistack"
 // import { getCajaActica } from "../../api/caja"
@@ -15,13 +15,9 @@ const CerrarCaja = () => {
   const navigate = useNavigate()
 
   const agregarPagoParcial = () => {
-    const totalAux: number = parseInt(precioTotal ? precioTotal : '0')
     const totalParcial: number = parseInt(parcial ? parcial : '0')
     changeState()
-    modificarMesa({
-      id: parseInt(mesa ? mesa : '0'),
-      precioTotal: totalAux - totalParcial
-    })
+    fetchAgregarPagoPArcial(parseInt(mesa ? mesa : '0'), totalParcial)
       .then(() => {
         enqueueSnackbar('Pago parcial agregado', { variant: 'success' })
         navigate(-1)
