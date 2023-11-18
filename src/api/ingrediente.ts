@@ -50,7 +50,13 @@ export const eliminarIngrediente = async (idIngrediente: number) => {
 
 export const listarIngredientes = async () => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/listarIngredientes');
+    const response = await fetch(BACKEND_URL + 'api/listarIngredientes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${localStorage.getItem('token')}`
+      }
+    });
     const data = await response.json();
     return data;
   } catch (err) {
