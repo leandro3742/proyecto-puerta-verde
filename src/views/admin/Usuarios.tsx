@@ -40,7 +40,7 @@ const Usuario = () => {
         roles4.splice(0, roles4.length);
         const rolesNoEnRoles = roles3.filter((rol3) => !roles.some((rol) => rol.nombre === rol3.nombre));
         setRoles4([...rolesNoEnRoles]);
-    }, [roles4]);
+    }, [roles3]);
 
     useEffect(() => {
         controlModal('modalUsuarios', 'cerrar');
@@ -75,6 +75,8 @@ const Usuario = () => {
             .then((res) => {
                 setRoles(res);
             });
+
+        console.log(roles);
     };
 
     const controlModal = (modal: string, accion: string) => {
