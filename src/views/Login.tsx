@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { redirect } from "react-router-dom"
 import { useSnackbar } from "notistack"
 // Styles
 import '../styles/login.css'
@@ -10,17 +10,22 @@ import spinnerStore from "../state/spinner"
 const Login = () => {
   const { changeState } = spinnerStore()
   const { enqueueSnackbar } = useSnackbar()
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     changeState()
     const data = new FormData(e.currentTarget);
+    if (!data.get('usuario') || !data.get('password')) {
+      enqueueSnackbar('Los campos no deben estar vacíos', { variant: 'error' })
+      changeState()
+      return
+    }
     login({ username: data.get('usuario') as string, password: data.get('password') as string })
       .then(response => {
         enqueueSnackbar('Bienvenido, ' + response.nombre, { variant: 'success' })
         localStorage.setItem('token', response.token)
-        navigate('/mesero')
+        redirect('/mesero')
       })
       .catch(() => {
         enqueueSnackbar('Usuario y/o contraseña incorrectos', { variant: 'error' })

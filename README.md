@@ -24,6 +24,13 @@ npm run dev
 ```
 Este comando ejecutará el proyecto en el puerto 5173, por lo que se puede acceder a la aplicación web en la siguiente dirección: [http://localhost:5173](http://localhost:5173)
 
+## Correr pruebas
+Para poder correr las pruebas se debe ejecutar el siguiente comando en la carpeta raíz del proyecto:
+```bash
+npx cypress open
+```
+Este comando ejecutará las pruebas del proyecto.
+
 ## Licencia
 [MIT](https://choosealicense.com/licenses/mit/)
 
