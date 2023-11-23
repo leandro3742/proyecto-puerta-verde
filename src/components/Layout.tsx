@@ -1,5 +1,5 @@
-import { ReactNode } from "react"
-import { Link } from "react-router-dom"
+import { ReactNode, useEffect } from "react"
+import { Link, redirect } from "react-router-dom"
 // Bootstrap
 import "bootstrap/dist/css/bootstrap.css";
 // Styles
@@ -15,6 +15,10 @@ import NavAdmin from "./nav/NavAdmin";
 const Layout = ({ children }: { children: ReactNode }) => {
   let type = 'admin'
   const { showSpinner } = spinnerStore()
+  useEffect(() => {
+    if (!localStorage.getItem('token')) redirect('/login')
+  }, [])
+
   return (
     <main>
       {showSpinner && <Spinner />}

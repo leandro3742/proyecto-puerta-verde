@@ -3,7 +3,13 @@ import { DtCaja } from "../dataTypes/DtCaja";
 
 export const getCajaActiva = async () => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/listarCajaavtiva');
+    const response = await fetch(BACKEND_URL + 'api/listarCajaavtiva', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
+      }
+    });
     const data = await response.json();
     return data;
   } catch (err) {

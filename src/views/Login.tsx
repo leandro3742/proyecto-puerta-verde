@@ -1,4 +1,4 @@
-import { redirect } from "react-router-dom"
+import { redirect, useNavigate } from "react-router-dom"
 import { useSnackbar } from "notistack"
 // Styles
 import '../styles/login.css'
@@ -10,7 +10,7 @@ import spinnerStore from "../state/spinner"
 const Login = () => {
   const { changeState } = spinnerStore()
   const { enqueueSnackbar } = useSnackbar()
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -25,7 +25,7 @@ const Login = () => {
       .then(response => {
         enqueueSnackbar('Bienvenido, ' + response.nombre, { variant: 'success' })
         localStorage.setItem('token', response.token)
-        redirect('/mesero')
+        return navigate('/mesero')
       })
       .catch(() => {
         enqueueSnackbar('Usuario y/o contraseña incorrectos', { variant: 'error' })

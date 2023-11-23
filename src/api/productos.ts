@@ -7,7 +7,8 @@ export const agregarProducto = async (Producto: DtProducto) => {
     const response = await fetch(BACKEND_URL + 'api/agregarProducto', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Producto)
     })
@@ -23,7 +24,8 @@ export const agregarIngredienteProducto = async (Ingredientes: DtProducto_Ingred
     const response = await fetch(BACKEND_URL + 'api/agregarProductos_Ingredientes', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Ingredientes)
     })
@@ -39,7 +41,8 @@ export const actualizarProducto = async (Producto: DtProducto) => {
     const response = await fetch(BACKEND_URL + 'api/modificarProducto', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Producto)
     })
@@ -55,7 +58,8 @@ export const eliminarProducto = async (idProducto: number) => {
     const response = await fetch(BACKEND_URL + `api/bajaProducto/${idProducto}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();
@@ -67,7 +71,13 @@ export const eliminarProducto = async (idProducto: number) => {
 
 export const listarIngredientesProductos = async (idProducto: number) => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/listarIngredientesProducto' + idProducto);
+    const response = await fetch(BACKEND_URL + 'api/listarIngredientesProducto' + idProducto, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
+      }
+    });
     const data = await response.json();
     return data;
   } catch (err) {
@@ -77,7 +87,14 @@ export const listarIngredientesProductos = async (idProducto: number) => {
 
 export const getListProductos = async () => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/listarProductos');
+    const response = await fetch(BACKEND_URL + 'api/listarProductos', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
+      }
+
+    });
     const data = await response.json();
     return data;
   } catch (err) {
@@ -87,7 +104,13 @@ export const getListProductos = async () => {
 
 export const getListByTipo = async (tipo: string) => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/listarProductosPorTipo' + tipo);
+    const response = await fetch(BACKEND_URL + 'api/listarProductosPorTipo' + tipo, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
+      }
+    });
     const data = await response.json();
     return data;
   } catch (err) {
@@ -97,7 +120,14 @@ export const getListByTipo = async (tipo: string) => {
 
 export const ListarProductosTipo = async (idProducto: number) => {
   try {
-    const response = await fetch(BACKEND_URL + `api/listarProductosPorTipo/${idProducto}`);
+    const response = await fetch(BACKEND_URL + `api/listarProductosPorTipo/${idProducto}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
+      }
+
+    });
     const data = await response.json();
     return data;
   } catch (err) {
@@ -110,7 +140,8 @@ export const quitarProductos_Ingredientes = async (Productos_Ingredientes: DtPro
     const response = await fetch(BACKEND_URL + 'api/quitarProductos_Ingredientes', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Productos_Ingredientes)
     })

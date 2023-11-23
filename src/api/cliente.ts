@@ -6,7 +6,8 @@ export const agregarCliente = async (Cliente: DtCliente) => {
     const response = await fetch(BACKEND_URL + 'api/agregarCliente', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Cliente)
     })
@@ -22,7 +23,8 @@ export const actualizarCliente = async (Cliente: DtCliente) => {
     const response = await fetch(BACKEND_URL + 'api/actualizarCliente', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Cliente)
     })
@@ -38,7 +40,8 @@ export const eliminarCliente = async (idCliente: number) => {
     const response = await fetch(BACKEND_URL + `api/bajaCliente/${idCliente}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();
@@ -50,7 +53,13 @@ export const eliminarCliente = async (idCliente: number) => {
 
 export const listarClientes = async () => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/listarCliente');
+    const response = await fetch(BACKEND_URL + 'api/listarCliente', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    });
     const data = await response.json();
     return data;
   } catch (err) {
