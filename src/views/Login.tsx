@@ -1,4 +1,4 @@
-import { redirect, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "notistack"
 // Styles
 import '../styles/login.css'
