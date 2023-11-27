@@ -17,7 +17,7 @@ export const modificarMesa = async ({ id, precioTotal }: { id: number, precioTot
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify({
         id_Mesa: id,
@@ -39,7 +39,7 @@ export const cerrarCuentaMesa = async (id: number) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify({
         id_Mesa: id,
@@ -61,7 +61,7 @@ export const agregarMesa = async (Mesa: DtMesa) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Mesa)
     });
@@ -78,7 +78,7 @@ export const bajaMesa = async (idMesa: number) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();
@@ -94,7 +94,7 @@ export const agregarPrecioMesa = async (idMesa: number, precio: number) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify({
         id_Mesa: idMesa,
