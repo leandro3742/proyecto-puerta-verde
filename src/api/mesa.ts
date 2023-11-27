@@ -16,7 +16,8 @@ export const modificarMesa = async ({ id, precioTotal }: { id: number, precioTot
     const response = await fetch(BACKEND_URL + 'api/modificarMesa', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify({
         id_Mesa: id,
@@ -37,7 +38,8 @@ export const cerrarCuentaMesa = async (id: number) => {
     const response = await fetch(BACKEND_URL + 'api/cerarCuentaMesa', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify({
         id_Mesa: id,
@@ -58,7 +60,8 @@ export const agregarMesa = async (Mesa: DtMesa) => {
     const response = await fetch(BACKEND_URL + 'api/agregarMesa', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Mesa)
     });
@@ -74,7 +77,8 @@ export const bajaMesa = async (idMesa: number) => {
     const response = await fetch(BACKEND_URL + `api/bajaMesa/${idMesa}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();
@@ -89,7 +93,8 @@ export const agregarPrecioMesa = async (idMesa: number, precio: number) => {
     const response = await fetch(BACKEND_URL + `api/modificarPrecio`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify({
         id_Mesa: idMesa,
