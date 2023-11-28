@@ -6,7 +6,8 @@ export const crearPedido = async (Pedido: DtPedido) => {
     const response = await fetch(BACKEND_URL + 'api/agregarPedido', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Pedido)
     })
@@ -19,7 +20,14 @@ export const crearPedido = async (Pedido: DtPedido) => {
 
 export const listarPedidosActivos = async () => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/listarPedidosActivos')
+    const response = await fetch(BACKEND_URL + 'api/listarPedidosActivos', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+
+    })
     const data: Array<DtPedido> = await response.json()
     return data
   } catch (error) {
@@ -33,7 +41,8 @@ export const updatePedido = async (Pedido: DtPedido) => {
     const response = await fetch(BACKEND_URL + 'api/actualizarPedido', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Pedido)
     })
@@ -46,7 +55,13 @@ export const updatePedido = async (Pedido: DtPedido) => {
 
 export const listarPedidosPorTipo = async (tipo: number) => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/listarPedidosPorTipo' + tipo)
+    const response = await fetch(BACKEND_URL + 'api/listarPedidosPorTipo' + tipo, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+    })
     const data: Array<DtPedido> = await response.json()
     return data
   } catch (error) {
@@ -59,7 +74,8 @@ export const finalizarPedido = async (id: number) => {
     const response = await fetch(BACKEND_URL + 'api/finalizarPedido/' + id, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
     })
     const data: { statusOk: boolean, statusMessage: string } = await response.json()

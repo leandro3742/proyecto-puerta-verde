@@ -8,7 +8,7 @@ export const agregarProducto = async (Producto: DtProducto) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Producto)
     })
@@ -25,7 +25,7 @@ export const agregarIngredienteProducto = async (Ingredientes: DtProducto_Ingred
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Ingredientes)
     })
@@ -42,7 +42,7 @@ export const actualizarProducto = async (Producto: DtProducto) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Producto)
     })
@@ -59,7 +59,7 @@ export const eliminarProducto = async (idProducto: number) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();
@@ -75,7 +75,7 @@ export const listarIngredientesProductos = async (idProducto: number) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();
@@ -91,7 +91,6 @@ export const getListProductos = async () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
       }
 
     });
@@ -108,7 +107,7 @@ export const getListByTipo = async (tipo: string) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();
@@ -124,7 +123,7 @@ export const ListarProductosTipo = async (idProducto: number) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
 
     });
@@ -141,7 +140,7 @@ export const quitarProductos_Ingredientes = async (Productos_Ingredientes: DtPro
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Productos_Ingredientes)
     })

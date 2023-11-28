@@ -8,7 +8,7 @@ export const agregarUsuario = async (Usuario: DtUsuario) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Usuario)
     })
@@ -25,7 +25,7 @@ export const eliminarUsuario = async (username: string) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: username
     });
@@ -42,7 +42,7 @@ export const listarUsuarios = async () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
     });
     const data = await response.json();
@@ -58,7 +58,7 @@ export const listarRoles = async (username: string) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorizarion': 'bearer ' + localStorage.getItem('token')
+        'authorizarion': 'Bearer ' + localStorage.getItem('token')
       },
     });
     const data = await response.json();
@@ -75,7 +75,7 @@ export const agregarRolUsuario = async (UsuarioRol: DtUsuarioRol) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(UsuarioRol)
     })
@@ -92,7 +92,7 @@ export const actualizarUsuario = async (Usuario: DtUsuario) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Usuario)
     })
@@ -109,7 +109,7 @@ export const eliminarRol = async (rol: DtUsuarioRol) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(rol)
     });

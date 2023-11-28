@@ -11,6 +11,7 @@ import Spinner from "./Spinner";
 import spinnerStore from "../state/spinner";
 import NavMesero from "./nav/NavMesero";
 import NavAdmin from "./nav/NavAdmin";
+// import { Button } from "@mui/material";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   let type = 'admin'
@@ -18,6 +19,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!localStorage.getItem('token')) redirect('/login')
   }, [])
+
 
   return (
     <main>
@@ -27,10 +29,15 @@ const Layout = ({ children }: { children: ReactNode }) => {
           <Link to='/login'>
             <img src={logo} id='logo' />
           </Link>
-          <>
+          <div className="d-flex">
             {type === 'mesero' && <NavMesero />}
             {type === 'admin' && <NavAdmin />}
-          </>
+
+            {/* <Button className="ms-3" variant="contained" color="error" onClick={() => {
+              localStorage.removeItem('token')
+              redirect('/login')
+            }}>Cerrar sesion</Button> */}
+          </div>
         </nav>
         {children}
       </div>

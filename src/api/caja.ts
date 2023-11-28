@@ -7,7 +7,7 @@ export const getCajaActiva = async () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': 'bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();
@@ -19,7 +19,13 @@ export const getCajaActiva = async () => {
 
 export const sumarPrecioCaja = async (precio: number) => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/sumarPrecioCaja/' + precio);
+    const response = await fetch(BACKEND_URL + 'api/sumarPrecioCaja/' + precio, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+    });
     const data = await response.json();
     return data;
   } catch (err) {
@@ -29,7 +35,13 @@ export const sumarPrecioCaja = async (precio: number) => {
 
 export const cerrarCajaActiva = async () => {
   try {
-    const response = await fetch(BACKEND_URL + 'api/cerrarCajaActiva');
+    const response = await fetch(BACKEND_URL + 'api/cerrarCajaActiva', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+    });
     const data = await response.json();
     return data;
   } catch (err) {
@@ -42,7 +54,8 @@ export const crearCaja = async (caja: DtCaja) => {
     const response = await fetch(BACKEND_URL + 'api/agregarCaja', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(caja)
     });

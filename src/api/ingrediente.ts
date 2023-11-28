@@ -22,7 +22,8 @@ export const actualizarIngrediente = async (Ingrediente: DtIngrediente) => {
     const response = await fetch(BACKEND_URL + 'api/modificarIngrediente', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Ingrediente)
     })
@@ -38,7 +39,8 @@ export const eliminarIngrediente = async (idIngrediente: number) => {
     const response = await fetch(BACKEND_URL + `api/bajaIngrediente/${idIngrediente}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();
@@ -54,7 +56,7 @@ export const listarIngredientes = async () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem('token')}`
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       }
     });
     const data = await response.json();

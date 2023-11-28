@@ -19,7 +19,8 @@ export const getAllEstadisticas = async (props: props): Promise<Array<DtEstadist
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify({
         cantidad: 0,

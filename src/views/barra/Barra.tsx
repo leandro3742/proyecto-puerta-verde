@@ -164,7 +164,7 @@ const Barra = () => {
           <ProductCard key={elem.id_Producto} elem={elem} addProduct={addProduct}>
             {checkQty(elem.id_Producto) > 0 &&
               <div className="container-counter">
-                <div className="counter bg-secondary">
+                <div className="counter">
                   <span>{checkQty(elem.id_Producto)}</span>
                 </div>
               </div>
