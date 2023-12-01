@@ -58,7 +58,7 @@ export const listarRoles = async (username: string) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorizarion': 'Bearer ' + localStorage.getItem('token')
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
     });
     const data = await response.json();
