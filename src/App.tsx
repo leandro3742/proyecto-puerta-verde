@@ -29,7 +29,7 @@ function App() {
   const { addNotification: addNotificationMesero } = meseroStore()
   useEffect(() => {
     const hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(BACKEND_URL + "chatHub", { withCredentials: true })
+      .withUrl(BACKEND_URL + "chatHub", { withCredentials: true, transport: signalR.HttpTransportType.WebSockets })
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
