@@ -9,6 +9,7 @@ export interface DtPedido {
   fecha_ingreso: string,
   numero_movil: string,
   tipo: number,
+  nombreMesa: string,
   list_IdProductos: Array<{
     id_Producto: number,
     observaciones: string

@@ -66,7 +66,7 @@ const Cocina = () => {
         return (
           <article id={"pedido" + pedido.id_Pedido.toString()} key={pedido.id_Pedido} className="m-3 p-3 rounded shadow article-cocina">
             {pedido.id_Mesa &&
-              <h1>Orden para:  Mesa {pedido.id_Mesa}</h1>
+              <h1>{pedido.nombreMesa}</h1>
             }
             {parseListProducts(pedido.list_IdProductos).map((producto, index) => {
               return (
