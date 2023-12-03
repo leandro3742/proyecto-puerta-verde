@@ -98,7 +98,7 @@ const Producto = () => {
         setNombre('');
         setDescripcion('');
         setPrecio('0');
-        setTipo('0');
+        setTipo('1');
         setIngredientes2([]);
         setSelectedOptions(new Set());
         setTitle('Registrar Producto');

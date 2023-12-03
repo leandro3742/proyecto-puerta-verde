@@ -6,7 +6,8 @@ export const agregarIngrediente = async (Ingrediente: DtIngrediente) => {
     const response = await fetch(BACKEND_URL + 'api/agregarIngrediente', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(Ingrediente)
     })

@@ -105,7 +105,9 @@ export const agregarPrecioMesa = async (idMesa: number, precio: number) => {
       },
       body: JSON.stringify({
         id_Mesa: idMesa,
-        precioTotal: precio,
+        nombre: '',
+        enUso: true,
+        precioTotal: precio
       })
     });
     const data = await response.json();
