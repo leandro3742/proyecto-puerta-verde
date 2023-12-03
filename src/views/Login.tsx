@@ -23,8 +23,8 @@ const Login = () => {
     }
     login({ username: data.get('usuario') as string, password: data.get('password') as string })
       .then(response => {
-        enqueueSnackbar('Bienvenido, ' + response.nombre, { variant: 'success' })
-        localStorage.setItem('token', response.token)
+        enqueueSnackbar('Bienvenido, ' + response.loginRespponse.nombre, { variant: 'success' })
+        localStorage.setItem('token', response.loginRespponse.token)
         return navigate('/mesero')
       })
       .catch(() => {
