@@ -40,6 +40,12 @@ const Barra = () => {
   }, [])
 
   useEffect(() => {
+      if (mesas.length > 0) {
+        setMesaSelected(String(mesas[0].nombre));
+      }
+  }, [mesas]);
+
+  useEffect(() => {
     setMenuFiltrado(menu.filter(elem => elem.nombre.toLowerCase().includes(search.toLowerCase())))
   }, [search, menu])
 
@@ -108,6 +114,7 @@ const Barra = () => {
       }
 
       const mesa = mesas.find(elem => elem.nombre == mesaSelected)
+      console.log("La mesa es: "+mesa)
       if (!mesa)
         return ''
       const totalPedido = list.reduce((acc: number, elem: DtProduct) => acc + (elem.product?.precio || 0) * elem.qty, 0)
@@ -122,7 +129,8 @@ const Barra = () => {
         fecha_ingreso: new Date().toISOString(),
         numero_movil: '',
         list_IdProductos,
-        tipo: parseInt(key)
+        tipo: parseInt(key),
+        nombreMesa: ''
       }
       try {
         changeState()
