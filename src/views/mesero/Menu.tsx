@@ -112,7 +112,8 @@ const Menu = () => {
         fecha_ingreso: new Date().toISOString(),
         numero_movil: '',
         list_IdProductos,
-        tipo: parseInt(key)
+        tipo: parseInt(key),
+        nombreMesa: ''
       }
       try {
         changeState()
