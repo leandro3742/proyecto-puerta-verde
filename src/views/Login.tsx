@@ -24,7 +24,10 @@ const Login = () => {
     login({ username: data.get('usuario') as string, password: data.get('password') as string })
       .then(response => {
         enqueueSnackbar('Bienvenido, ' + response.nombre, { variant: 'success' })
+        const tokenExpirationTime = new Date(new Date().getTime() + 12 * 3600 * 1000);
         localStorage.setItem('token', response.token)
+        localStorage.setItem('tokenExpirationTime', tokenExpirationTime.toISOString())
+
         return navigate('/mesero')
       })
       .catch(() => {

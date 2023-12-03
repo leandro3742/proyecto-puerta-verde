@@ -108,6 +108,7 @@ const Menu = () => {
         pago: false,
         username: 'fbauza2014@gmail.com',
         id_Mesa: mesa ? parseInt(mesa) : 0,
+        nombreMesa: '',
         estadoProceso: false,
         fecha_ingreso: new Date().toISOString(),
         numero_movil: '',

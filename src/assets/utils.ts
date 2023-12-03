@@ -16,3 +16,15 @@ export function getFecha(): string {
   const anio = date.getFullYear();
   return `${dia}/${mes}/${anio}`;
 }
+
+export function verifyToken(): boolean {
+  if (localStorage.getItem('tokenExpiration')) {
+    const tokenExpiration: string | null = localStorage.getItem('tokenExpiration');
+    const tokenExpirationDate: Date | null = tokenExpiration ? new Date(tokenExpiration) : null;
+    if (!localStorage.getItem('token') || (tokenExpirationDate && tokenExpirationDate <= new Date())) {
+      return false;
+    }
+    return true
+  }
+  return false
+}

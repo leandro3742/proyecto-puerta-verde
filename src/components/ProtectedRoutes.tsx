@@ -1,19 +1,9 @@
-import { useEffect } from "react"
-import { Outlet } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
+import { Navigate, Outlet } from "react-router-dom"
+import { verifyToken } from "../assets/utils"
 
 const ProtectedRoutes = () => {
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/login")
-    }
-  }, [])
-
-  return (
-    <Outlet />
-  )
+  if (verifyToken()) return <Outlet />
+  else return <Navigate to="/login" />
 }
 
 export default ProtectedRoutes

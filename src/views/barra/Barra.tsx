@@ -118,6 +118,7 @@ const Barra = () => {
         pago: false,
         username: 'fbauza2014@gmail.com',
         id_Mesa: parseInt(mesa?.id_Mesa),
+        nombreMesa: '',
         estadoProceso: false,
         fecha_ingreso: new Date().toISOString(),
         numero_movil: '',
