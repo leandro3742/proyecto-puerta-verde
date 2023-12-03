@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { meseroStore } from '../../state/mesero';
 import { closeSession } from '../../assets/utils';
 
-const NavMesero = () => {
+const NavCocina = () => {
   const { notifications, readNotification } = meseroStore()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -48,4 +48,4 @@ const NavMesero = () => {
   )
 }
 
-export default NavMesero
+export default NavCocina

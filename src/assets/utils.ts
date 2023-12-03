@@ -18,8 +18,8 @@ export function getFecha(): string {
 }
 
 export function verifyToken(): boolean {
-  if (localStorage.getItem('tokenExpiration')) {
-    const tokenExpiration: string | null = localStorage.getItem('tokenExpiration');
+  if (localStorage.getItem('tokenExpirationTime')) {
+    const tokenExpiration: string | null = localStorage.getItem('tokenExpirationTime');
     const tokenExpirationDate: Date | null = tokenExpiration ? new Date(tokenExpiration) : null;
     if (!localStorage.getItem('token') || (tokenExpirationDate && tokenExpirationDate <= new Date())) {
       return false;
@@ -27,4 +27,11 @@ export function verifyToken(): boolean {
     return true
   }
   return false
+}
+
+export function closeSession() {
+  localStorage.removeItem('token')
+  localStorage.removeItem('tokenExpirationTime')
+  localStorage.removeItem('rol')
+  window.location.reload()
 }

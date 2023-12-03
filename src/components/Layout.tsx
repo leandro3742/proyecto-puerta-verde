@@ -11,12 +11,17 @@ import Spinner from "./Spinner";
 import spinnerStore from "../state/spinner";
 import NavMesero from "./nav/NavMesero";
 import NavAdmin from "./nav/NavAdmin";
-import { verifyToken } from "../assets/utils";
-// import { Button } from "@mui/material";
+import NavCocina from "./nav/NavCocina";
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  let type = 'admin'
   const { showSpinner } = spinnerStore()
+
+  const showNav = () => {
+    if (localStorage.getItem('rol') === 'ADMIN') return <NavAdmin />
+    if (localStorage.getItem('rol') === 'MESERO') return <NavMesero />
+    if (localStorage.getItem('rol') === 'COCINA') return <NavCocina />
+    if (localStorage.getItem('rol') === 'BARRA') return <NavMesero />
+  }
 
   return (
     <main>
@@ -26,17 +31,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
           <Link to='/login'>
             <img src={logo} id='logo' />
           </Link>
-          {verifyToken() &&
-            <div className="d-flex">
-              {type === 'mesero' && <NavMesero />}
-              {type === 'admin' && <NavAdmin />}
-
-              {/* <Button className="ms-3" variant="contained" color="error" onClick={() => {
-              localStorage.removeItem('token')
-              redirect('/login')
-            }}>Cerrar sesion</Button> */}
-            </div>
-          }
+          <div className="d-flex">
+            {showNav()}
+          </div>
         </nav>
         {children}
       </div>

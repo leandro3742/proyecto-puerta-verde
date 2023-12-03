@@ -10,7 +10,7 @@ import spinnerStore from "../state/spinner"
 const Login = () => {
   const { changeState } = spinnerStore()
   const { enqueueSnackbar } = useSnackbar()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -21,21 +21,37 @@ const Login = () => {
       changeState()
       return
     }
-    login({ username: data.get('usuario') as string, password: data.get('password') as string })
-      .then(response => {
-        enqueueSnackbar('Bienvenido, ' + response.nombre, { variant: 'success' })
-        const tokenExpirationTime = new Date(new Date().getTime() + 12 * 3600 * 1000);
-        localStorage.setItem('token', response.token)
-        localStorage.setItem('tokenExpirationTime', tokenExpirationTime.toISOString())
-
-        return navigate('/mesero')
-      })
-      .catch(() => {
-        enqueueSnackbar('Usuario y/o contraseña incorrectos', { variant: 'error' })
-      })
-      .finally(() => {
-        changeState()
-      })
+    try {
+      const response = await login({ username: data.get('usuario') as string, password: data.get('password') as string })
+      changeState()
+      enqueueSnackbar('Bienvenido, ' + response.loginRespponse.nombre, { variant: 'success' })
+      const tokenExpirationTime = new Date(new Date().getTime() + 12 * 3600 * 1000);
+      localStorage.setItem('token', response.loginRespponse.token)
+      localStorage.setItem('tokenExpirationTime', tokenExpirationTime.toISOString())
+      if (response.roles.find((rol: any) => rol.nombre === 'ADMIN')) {
+        localStorage.setItem('rol', 'ADMIN')
+        navigate('/admin/estadisticas')
+      }
+      else if (response.roles.find((rol: any) => rol.nombre === 'CAJA')) {
+        localStorage.setItem('rol', 'CAJA')
+        navigate('/caja')
+      }
+      else if (response.roles.find((rol: any) => rol.nombre === 'COCINA')) {
+        localStorage.setItem('rol', 'COCINA')
+        navigate('/cocina')
+      }
+      else if (response.roles.find((rol: any) => rol.nombre === 'BARRA')) {
+        localStorage.setItem('rol', 'BARRA')
+        navigate('/barra')
+      }
+      else if (response.roles.find((rol: any) => rol.nombre === 'MESERO')) {
+        localStorage.setItem('rol', 'MESERO')
+        navigate('/mesero')
+      }
+    } catch (err) {
+      changeState()
+      enqueueSnackbar('Usuario y/o contraseña incorrectos', { variant: 'error' })
+    }
   }
 
   return (

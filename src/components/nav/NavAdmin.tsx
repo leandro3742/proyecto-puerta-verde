@@ -1,6 +1,7 @@
 import { Button, Fade, Menu, MenuItem } from "@mui/material"
 import { useState } from "react";
 import { Link } from "react-router-dom"
+import { closeSession } from "../../assets/utils";
 
 const NavAdmin = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -21,6 +22,7 @@ const NavAdmin = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <>
       {window.screen.width > 768 &&
@@ -85,7 +87,7 @@ const NavAdmin = () => {
                 Estadisticas
               </Link>
             </MenuItem>
-            <Button color="error">
+            <Button color="error" onClick={closeSession}>
               Cerrar Sesión
             </Button>
           </Menu>
@@ -136,7 +138,7 @@ const NavAdmin = () => {
                 Admin
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={closeSession}>Logout</MenuItem>
           </Menu>
         </>
       }
