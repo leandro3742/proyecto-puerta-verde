@@ -124,18 +124,18 @@ const NavAdmin = () => {
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link className="text-white" to='/barra'>
+              <Link className="text-white" to='/admin/barra'>
                 Barra
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link className="text-white" to='/caja'>
+              <Link className="text-white" to='/admin/caja'>
                 Cajero
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link className="text-white" to='/admin'>
-                Admin
+              <Link className="text-white" to='/admin/usuarios'>
+                Usuarios
               </Link>
             </MenuItem>
             <MenuItem onClick={closeSession}>Logout</MenuItem>

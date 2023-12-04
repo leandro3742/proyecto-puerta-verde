@@ -24,6 +24,7 @@ const Login = () => {
     try {
       const response = await login({ username: data.get('usuario') as string, password: data.get('password') as string })
       changeState()
+      console.log(response)
       enqueueSnackbar('Bienvenido, ' + response.loginRespponse.nombre, { variant: 'success' })
       const tokenExpirationTime = new Date(new Date().getTime() + 12 * 3600 * 1000);
       localStorage.setItem('token', response.loginRespponse.token)
@@ -40,12 +41,8 @@ const Login = () => {
         localStorage.setItem('rol', 'COCINA')
         navigate('/cocina')
       }
-      else if (response.roles.find((rol: any) => rol.nombre === 'BARRA')) {
-        localStorage.setItem('rol', 'BARRA')
-        navigate('/barra')
-      }
-      else if (response.roles.find((rol: any) => rol.nombre === 'MESERO')) {
-        localStorage.setItem('rol', 'MESERO')
+      else if (response.roles.find((rol: any) => rol.nombre === 'MOZO')) {
+        localStorage.setItem('rol', 'MOZO')
         navigate('/mesero')
       }
     } catch (err) {

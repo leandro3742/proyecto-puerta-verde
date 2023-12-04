@@ -18,9 +18,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   const showNav = () => {
     if (localStorage.getItem('rol') === 'ADMIN') return <NavAdmin />
-    if (localStorage.getItem('rol') === 'MESERO') return <NavMesero />
+    if (localStorage.getItem('rol') === 'MOZO') return <NavMesero />
     if (localStorage.getItem('rol') === 'COCINA') return <NavCocina />
-    if (localStorage.getItem('rol') === 'BARRA') return <NavMesero />
   }
 
   return (
