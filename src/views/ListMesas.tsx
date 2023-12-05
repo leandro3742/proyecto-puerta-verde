@@ -31,7 +31,7 @@ const ListMesas = (props: props) => {
       <section className='d-flex flex-wrap justify-content-around'>
         {mesas.map(elem => {
           return (
-            <Link to={`/${props.url}/${elem.id_Mesa}/${elem.precioTotal}`} key={elem.id_Mesa}>
+            <Link to={`/${props.url}/${elem.id_Mesa}/${elem.precioTotal}/${elem.nombre}`} key={elem.id_Mesa}>
               <article className={`mesas-background ${elem.enUso ? 'mesa-ocupada' : 'mesa-vacia'}`}>
                 <div>
                   <h5 className='text-center'>Mesa {elem.nombre}</h5>

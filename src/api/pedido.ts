@@ -1,4 +1,5 @@
 import { BACKEND_URL } from "../assets/constant";
+import { DtEstadistica } from "../dataTypes/DtEstadistica";
 import { DtPedido } from "../dataTypes/DtPedido";
 
 export const crearPedido = async (Pedido: DtPedido) => {
@@ -79,6 +80,24 @@ export const finalizarPedido = async (id: number) => {
       }
     })
     const data: { statusOk: boolean, statusMessage: string } = await response.json()
+    return data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const listarPedidosPorMesa = async (idMesa: number) => {
+  try {
+    const response = await fetch(BACKEND_URL + 'api/listarPedidosPorMesa' +idMesa, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+
+    })
+    const data: Array<DtEstadistica> = await response.json()
+    console.log(data);
     return data
   } catch (error) {
     throw error

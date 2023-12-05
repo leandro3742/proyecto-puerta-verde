@@ -71,7 +71,7 @@ function App() {
                 <Route index element={<div>
                 </div>} />
                 <Route path='mesero' element={<Mesero />} />
-                <Route path='mesero/:mesa/:precioTotal' element={<Menu />} />
+                <Route path='mesero/:mesa/:precioTotal/:nombre' element={<Menu />} />
               </Route>
 
               <Route path='/cocina' element={<ProtectedRoutes />}>
@@ -95,7 +95,7 @@ function App() {
 
               <Route path='/caja' element={<ProtectedRoutes />}>
                 <Route index element={<Caja />} />
-                <Route path=':mesa/:precioTotal' element={<CerrarCaja />} />
+                <Route path=':mesa/:precioTotal/:nombre' element={<CerrarCaja />} />
               </Route>
 
             </Routes>
