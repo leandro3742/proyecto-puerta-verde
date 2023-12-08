@@ -1,7 +1,6 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import {useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { saveAs } from 'file-saver';
 // Styles
 import '../../styles/cerrarCaja.css'
 import { agregarPagoParcial as fetchAgregarPagoPArcial, cerrarCuentaMesa } from "../../api/mesa"
@@ -11,8 +10,8 @@ import { DtEstadistica } from "../../dataTypes/DtEstadistica"
 import { listarPedidosPorMesa } from "../../api/pedido"
 
 const CerrarCaja = () => {
-  const { mesa, precioTotal, nombre} = useParams()
-  const [parcial, setParcial] = useState<string>('0')
+  const { mesa, precioTotal, nombre} = useParams();
+  const [parcial, setParcial] = useState<string>('0');
   const [Productos, setProductos] = useState<DtEstadistica[]>([]);
   const { changeState } = spinnerStore()
   const navigate = useNavigate()
@@ -29,32 +28,31 @@ const CerrarCaja = () => {
       .finally(() => changeState())
   }
 
-  const base64ToUint8Array = (base64: string) => {
-    const binaryString = window.atob(base64);
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes;
-  };
+  const downloadPDF = (pdf: string) => {
+    const linkSource = `data:application/pdf;base64,${pdf}`;
+    const downloadLink = document.createElement("a");
+    const fileName = "Factura"+nombre+".pdf";
+
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    console.log(downloadLink);
+    downloadLink.click();
+  }
   
   const cerrarMesa = async () => {
     try {
       changeState();
-      const aux = await cerrarCuentaMesa(parseInt(mesa ? mesa : '0'));
+      const aux = await cerrarCuentaMesa(parseInt(mesa ? mesa : '0'))
       enqueueSnackbar('Mesa cerrada', { variant: 'success' });
       navigate(-1);
       changeState();
-  
-      const bytes = base64ToUint8Array(aux);
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'document.pdf');
+      
+      downloadPDF(aux.datos);
     } catch (err) {
-      // Manejar el error, si es necesario
+      console.error("Error en cerrarMesa:", err);
     }
   };
-  
-  
+     
   const controlModal = (modal: string, accion: string) => {
     const elemento = document.getElementById(modal);
     if (elemento) {

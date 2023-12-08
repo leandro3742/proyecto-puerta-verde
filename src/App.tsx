@@ -23,6 +23,7 @@ import { meseroStore } from './state/mesero'
 import CerrarCaja from './views/caja/CerrarCaja'
 import Menu from './views/mesero/Menu'
 import Mesero from './views/mesero/Mesero'
+import MenuProductos from './views/MenuProductos'
 
 function App() {
   const { addNotification } = cocinaStore()
@@ -66,6 +67,8 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/login" element={<Login />} />
+
+              <Route path='menuProductos' element={<MenuProductos />}/>
 
               <Route path='/' element={<ProtectedRoutes />}>
                 <Route index element={<div>
