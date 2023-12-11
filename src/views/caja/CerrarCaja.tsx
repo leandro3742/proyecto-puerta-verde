@@ -1,9 +1,9 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
-import {useState } from "react"
+import { useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 // Styles
 import '../../styles/cerrarCaja.css'
-import { agregarPagoParcial as fetchAgregarPagoPArcial, cerrarCuentaMesa } from "../../api/mesa"
+import { agregarPagoParcial as fetchAgregarPagoParcial, cerrarCuentaMesa } from "../../api/mesa"
 import spinnerStore from "../../state/spinner"
 import { enqueueSnackbar } from "notistack"
 import { DtEstadistica } from "../../dataTypes/DtEstadistica"
@@ -11,35 +11,44 @@ import { listarPedidosPorMesa } from "../../api/pedido"
 import { sumarPrecioCaja } from "../../api/caja"
 
 const CerrarCaja = () => {
-  const { mesa, precioTotal, nombre} = useParams();
+  const { mesa, precioTotal, nombre } = useParams();
   const [parcial, setParcial] = useState<string>('0');
   const [Productos, setProductos] = useState<DtEstadistica[]>([]);
   const { changeState } = spinnerStore()
   const navigate = useNavigate()
 
-  const agregarPagoParcial = () => {
+  const agregarPagoParcial = async () => {
     const totalParcial: number = parseInt(parcial ? parcial : '0')
     changeState()
-    fetchAgregarPagoPArcial(parseInt(mesa ? mesa : '0'), totalParcial)
-      .then(() => {
-        enqueueSnackbar('Pago parcial agregado', { variant: 'success' })
-        navigate(-1)
-      })
-      .catch(err => enqueueSnackbar(err.message, { variant: 'error' }))
-      .finally(() => changeState())
+    try {
+      const resPagoParcial = await fetchAgregarPagoParcial(parseInt(mesa ? mesa : '0'), totalParcial)
+      if (resPagoParcial.statusOk) {
+        const respuestaCaja = await sumarPrecioCaja(totalParcial);
+        if (respuestaCaja.statusOk) {
+          enqueueSnackbar('Pago parcial agregado', { variant: 'success' })
+          navigate(-1)
+          changeState()
+        }
+        else throw new Error(respuestaCaja.message)
+      }
+      else throw new Error(resPagoParcial.message)
+    } catch (err: any) {
+      enqueueSnackbar(err.message, { variant: 'error' })
+      changeState()
+    }
   }
 
   const downloadPDF = (pdf: string) => {
     const linkSource = `data:application/pdf;base64,${pdf}`;
     const downloadLink = document.createElement("a");
-    const fileName = "Factura"+nombre+".pdf";
+    const fileName = "Factura" + nombre + ".pdf";
 
     downloadLink.href = linkSource;
     downloadLink.download = fileName;
     console.log(downloadLink);
     downloadLink.click();
   }
-  
+
   const cerrarMesa = async () => {
     try {
       changeState();
@@ -49,23 +58,23 @@ const CerrarCaja = () => {
       console.log(respuestaCaja);
       navigate(-1);
       changeState();
-      
+
       downloadPDF(aux.datos);
     } catch (err) {
       console.error("Error en cerrarMesa:", err);
     }
   };
-     
+
   const controlModal = (modal: string, accion: string) => {
     const elemento = document.getElementById(modal);
     if (elemento) {
-        if (accion === 'abrir') {
-            elemento.classList.add('show');
-            elemento.style.display = 'block';
-        } else if (accion === 'cerrar') {
-            elemento.classList.remove('show');
-            elemento.style.display = 'none';
-        }
+      if (accion === 'abrir') {
+        elemento.classList.add('show');
+        elemento.style.display = 'block';
+      } else if (accion === 'cerrar') {
+        elemento.classList.remove('show');
+        elemento.style.display = 'none';
+      }
     }
   };
 
@@ -73,9 +82,9 @@ const CerrarCaja = () => {
     if (mesa !== undefined) {
       const aux = await listarPedidosPorMesa(parseInt(mesa))
       setProductos(aux);
-      if(aux.length > 0){
+      if (aux.length > 0) {
         controlModal("modalProductos", "abrir");
-      }else{
+      } else {
         enqueueSnackbar('La mesa no posee Productos', { variant: 'warning' })
       }
     }

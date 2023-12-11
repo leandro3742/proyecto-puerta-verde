@@ -13,7 +13,7 @@ import { enqueueSnackbar } from "notistack";
 import { agregarPrecioMesa } from "../../api/mesa";
 import DialogCart from "../../components/DialogCart";
 import ProductCard from "../../components/ProductCard";
-import { sumarPrecioCaja } from "../../api/caja";
+// import { sumarPrecioCaja } from "../../api/caja";
 
 const Menu = () => {
   const { mesa, precioTotal } = useParams()
@@ -124,7 +124,7 @@ const Menu = () => {
         if (!mesa) throw new Error('No se pudo actualizar la mesa')
         if (!precioTotal) throw new Error('No se pudo actualizar la mesa')
         await agregarPrecioMesa(parseInt(mesa), totalPedido)
-        await sumarPrecioCaja(parseInt(precioTotal))
+        // await sumarPrecioCaja(parseInt(precioTotal))
         changeState()
       }
       catch (err) {
