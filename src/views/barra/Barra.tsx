@@ -153,19 +153,23 @@ const Barra = () => {
 
   return (
     <div>
-      <section className="d-flex justify-content-between mt-3 mx-5">
-        <form className="search shadow px-3 " onSubmit={(e) => { e.preventDefault() }}>
-          <input type="text" placeholder="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />
-          <IconButton type="button">
-            <SearchIcon sx={{ color: 'black' }} />
-          </IconButton>
-        </form>
-        <Button
-          startIcon={<AddShoppingCartIcon />}
-          onClick={() => setOpenPedido(true)}
-        >
-          Ver pedido
-        </Button>
+      <section className="d-flex flex-lg-row flex-column-reverse justify-content-between mt-3 mx-5">
+        <div>
+          <form className="search shadow px-3" onSubmit={(e) => { e.preventDefault() }}>
+            <input type="text" placeholder="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <IconButton type="button">
+              <SearchIcon sx={{ color: 'black' }} />
+            </IconButton>
+          </form>
+        </div>
+        <div className="d-flex justify-content-end mb-lg-0 mb-3">
+          <Button
+            startIcon={<AddShoppingCartIcon />}
+            onClick={() => setOpenPedido(true)}
+          >
+            Ver pedido
+          </Button>
+        </div>
       </section>
       <section className="d-flex flex-wrap justify-content-around">
         {menuFiltrado.map(elem => (
