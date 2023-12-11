@@ -14,9 +14,8 @@ export const login = async (data: ILogin) => {
         "Content-Type": "application/json"
       }
     });
-
     const result = await response.json();
-
+    console.log(result);
     return result;
   } catch (error) {
     throw error;

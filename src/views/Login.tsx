@@ -23,8 +23,9 @@ const Login = () => {
     }
     try {
       const response = await login({ username: data.get('usuario') as string, password: data.get('password') as string })
-      changeState()
       console.log(response)
+      if (!response.loginRespponse) throw new Error('Usuario y/o contraseña incorrectos')
+      changeState()
       enqueueSnackbar('Bienvenido, ' + response.loginRespponse.nombre, { variant: 'success' })
       const tokenExpirationTime = new Date(new Date().getTime() + 12 * 3600 * 1000);
       localStorage.setItem('token', response.loginRespponse.token)
