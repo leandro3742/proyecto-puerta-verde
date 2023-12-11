@@ -1,6 +1,9 @@
 .color-Style{
   background-color: var(--color-input);
 }
+.color-Style:focus {
+  background-color: var(--color-input);
+}
 
 /* Estilos personalizados para la barra de búsqueda */
 .search-input {
