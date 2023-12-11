@@ -4,7 +4,7 @@ import { VitePWA } from "vite-plugin-pwa";
 
 const manifestForPlugin: Partial<any> = {
   registerType: 'autoUpdate',
-  includeAssets: ['loco.png', 'robots.txt', 'apple-touch-icon.png'],
+  includeAssets: ['logo.png', 'robots.txt', 'apple-touch-icon.png'],
   manifest: {
     name: 'Puerta Verde',
     short_name: 'Puerta Verde',
@@ -12,7 +12,7 @@ const manifestForPlugin: Partial<any> = {
     theme_color: '#222430',
     icons: [
       {
-        src: '/src/assets/logo.png',
+        src: '/logo.png',
         sizes: '192x192',
         type: 'image/png',
       }
