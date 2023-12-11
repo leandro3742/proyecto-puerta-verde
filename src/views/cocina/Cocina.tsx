@@ -12,12 +12,19 @@ const Cocina = () => {
   const { notifications } = cocinaStore()
   const { changeState } = spinnerStore()
   const [pedidos, setPedidos] = useState<Array<DtPedido>>([])
+  const [licuados, setLicuados] = useState<Array<DtPedido>>([])
   const [firstCall, setFirstCall] = useState<boolean>(false)
   useEffect(() => {
     changeState()
     listarPedidosPorTipo(1)
       .then(res => {
         setPedidos(res)
+      })
+      .catch(err => console.log(err))
+      //.finally(() => changeState())
+    listarPedidosPorTipo(3)
+      .then(res => {
+        setLicuados(res)
       })
       .catch(err => console.log(err))
       .finally(() => changeState())
@@ -28,6 +35,9 @@ const Cocina = () => {
     if (!firstCall) return
     listarPedidosPorTipo(1)
       .then(res => setPedidos(res))
+      .catch(err => console.log(err))
+    listarPedidosPorTipo(3)
+      .then(res => setLicuados(res))
       .catch(err => console.log(err))
   }, [notifications])
 
@@ -49,6 +59,7 @@ const Cocina = () => {
       .then((res) => {
         if (!res.statusOk) throw res.statusMessage
         console.log(pedidos.filter(pedidoAux => pedidoAux.id_Pedido != pedido.id_Pedido))
+        setLicuados(licuados.filter(pedidoAux => pedidoAux.id_Pedido != pedido.id_Pedido))
         setPedidos(pedidos.filter(pedidoAux => pedidoAux.id_Pedido != pedido.id_Pedido))
       })
       .catch(err => enqueueSnackbar(err, { variant: 'error' }))
@@ -62,6 +73,29 @@ const Cocina = () => {
 
   return (
     <div className="m-3 d-flex flex-wrap d-flex justify-content-around">
+      {licuados.map(pedido => {
+        return (
+          <article id={"pedido" + pedido.id_Pedido.toString()} key={pedido.id_Pedido} className="m-3 p-3 rounded shadow article-cocina">
+            {pedido.id_Mesa &&
+              <h1>{pedido.nombreMesa}</h1>
+            }
+            {parseListProducts(pedido.list_IdProductos).map((producto, index) => {
+              return (
+                <section key={index} className="rounded p-3 article-1">
+                  <h4>{producto.nombreProducto}</h4>
+                  <h5 className="ms-3">Cant: {producto.cant}</h5>
+                  {producto.observaciones && <h5 className="ms-3 text-secondary">Obs: {producto.observaciones}</h5>}
+                </section>
+              )
+            })}
+            <Timer startDate={pedido.fecha_ingreso} pedidoId={pedido.id_Pedido} changeBg={changeBg} />
+            <div className="d-flex justify-content-end">
+              <Button onClick={() => completeOrder(pedido)}>Orden pronta</Button>
+            </div>
+          </article>
+        )
+      })
+      }
       {pedidos.map(pedido => {
         return (
           <article id={"pedido" + pedido.id_Pedido.toString()} key={pedido.id_Pedido} className="m-3 p-3 rounded shadow article-cocina">

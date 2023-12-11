@@ -8,7 +8,7 @@ import { DtProducto } from '../dataTypes/DtProducto';
 const MenuProductos = () => {
     const { changeState } = spinnerStore();
     const [productos, setProductos] = useState<DtProducto[]>([]);
-    const [selectedType, setSelectedType] = useState(1);
+    const [selectedType, setSelectedType] = useState(-1);
 
     useEffect(() => {
         changeState();

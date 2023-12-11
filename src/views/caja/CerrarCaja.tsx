@@ -8,6 +8,7 @@ import spinnerStore from "../../state/spinner"
 import { enqueueSnackbar } from "notistack"
 import { DtEstadistica } from "../../dataTypes/DtEstadistica"
 import { listarPedidosPorMesa } from "../../api/pedido"
+import { sumarPrecioCaja } from "../../api/caja"
 
 const CerrarCaja = () => {
   const { mesa, precioTotal, nombre} = useParams();
@@ -44,6 +45,8 @@ const CerrarCaja = () => {
       changeState();
       const aux = await cerrarCuentaMesa(parseInt(mesa ? mesa : '0'))
       enqueueSnackbar('Mesa cerrada', { variant: 'success' });
+      const respuestaCaja = await sumarPrecioCaja(parseInt(precioTotal || "0"));
+      console.log(respuestaCaja);
       navigate(-1);
       changeState();
       
