@@ -11,9 +11,8 @@ const Mesero = () => {
   const [openModal, setOpenModal] = useState(false)
   const [nombreMesa, setNombreMesa] = useState('')
   const { changeState } = spinnerStore()
-
+  const [reload, setReload] = useState(false)
   const createMesa = async () => {
-
     try {
       changeState()
       const newMesa: DtMesa = {
@@ -25,6 +24,9 @@ const Mesero = () => {
       const response = await agregarMesa(newMesa)
       console.log(response)
       changeState()
+      setOpenModal(false)
+      setNombreMesa('')
+      setReload(true)
     }
     catch (error) {
       changeState()
@@ -35,7 +37,7 @@ const Mesero = () => {
   return (
     <div>
       <Button className="m-3" onClick={() => setOpenModal(true)}>Agregar mesa</Button>
-      <ListMesas url="mesero" />
+      <ListMesas url="mesero" reload={reload} setReload={setReload} />
       <dialog open={openModal} className="dialog-mesero">
         <h1 className="text-center">Crear mesa</h1>
         <section className="d-flex flex-column justify-content-center">
